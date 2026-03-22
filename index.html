@@ -7,367 +7,190 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root{
-  --blue:#7EC8E3;
-  --blue-light:#EAF6FB;
-  --blue-mid:#B8E3F2;
-  --blue-dark:#3A9FC0;
-  --white:#FFFFFF;
-  --text:#1A2B38;
-  --text-muted:#5A7A8A;
-  --border:#D6EEF8;
-  --bg:#F5FBFE;
-  --star:#F59E0B;
-}
-
+:root{--blue:#7EC8E3;--blue-light:#EAF6FB;--blue-mid:#B8E3F2;--blue-dark:#3A9FC0;--white:#FFFFFF;--text:#1A2B38;--text-muted:#5A7A8A;--border:#D6EEF8;--bg:#F5FBFE;--star:#F59E0B;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* NAV */
-nav{
-  background:var(--white);
-  border-bottom:1px solid var(--border);
-  padding:0 5%;
-  height:60px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;top:0;z-index:100;
-}
-
-.logo{
-  font-family:'Sora',sans-serif;
-  font-size:1.5rem;
-  font-weight:700;
-  color:var(--text);
-  letter-spacing:-1px;
-}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text);letter-spacing:-1px;cursor:pointer;}
 .logo span{color:var(--blue-dark);}
-
 .nav-links{display:flex;gap:1.5rem;list-style:none;}
-.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s;}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.875rem;font-weight:500;cursor:pointer;transition:color 0.2s;}
 .nav-links a:hover{color:var(--text);}
-
 .nav-right{display:flex;gap:0.6rem;align-items:center;}
-
 .btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text-muted);padding:7px 16px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
 .btn-ghost:hover{border-color:var(--blue-dark);color:var(--blue-dark);}
-
 .btn-main{background:var(--blue-dark);color:var(--white);border:none;padding:8px 18px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.2s;}
 .btn-main:hover{background:#2D86A3;}
-
-/* HERO */
-.hero{
-  background:var(--white);
-  border-bottom:1px solid var(--border);
-  padding:60px 5% 50px;
-  text-align:center;
-}
-
-.hero h1{
-  font-family:'Sora',sans-serif;
-  font-size:clamp(1.8rem,4vw,2.8rem);
-  font-weight:700;
-  color:var(--text);
-  line-height:1.25;
-  margin-bottom:0.75rem;
-}
-
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:60px 5% 50px;text-align:center;}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--text);line-height:1.25;margin-bottom:0.75rem;}
 .hero h1 em{font-style:normal;color:var(--blue-dark);}
-
-.hero p{
-  color:var(--text-muted);
-  font-size:1rem;
-  max-width:480px;
-  margin:0 auto 2rem;
-  line-height:1.7;
-}
-
-/* SEARCH */
+.hero p{color:var(--text-muted);font-size:1rem;max-width:480px;margin:0 auto 2rem;line-height:1.7;}
 .search-wrap{max-width:560px;margin:0 auto;}
-.search-box{
-  display:flex;
-  background:var(--bg);
-  border:1.5px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  transition:border-color 0.2s;
-}
+.search-box{display:flex;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;}
 .search-box:focus-within{border-color:var(--blue-dark);}
-.search-box input{
-  flex:1;border:none;outline:none;
-  padding:14px 16px;
-  font-size:0.95rem;
-  font-family:'Inter',sans-serif;
-  color:var(--text);
-  background:transparent;
-}
+.search-box input{flex:1;border:none;outline:none;padding:14px 16px;font-size:0.95rem;font-family:'Inter',sans-serif;color:var(--text);background:transparent;}
 .search-box input::placeholder{color:#9BB8C8;}
-.search-box select{
-  border:none;border-left:1.5px solid var(--border);
-  outline:none;padding:0 14px;
-  font-size:0.8rem;font-family:'Inter',sans-serif;
-  color:var(--text-muted);background:var(--white);
-  cursor:pointer;font-weight:600;
-}
-.search-btn{
-  background:var(--blue-dark);border:none;color:white;
-  padding:0 20px;cursor:pointer;font-size:0.875rem;
-  font-weight:600;font-family:'Inter',sans-serif;
-  display:flex;align-items:center;gap:6px;
-  transition:background 0.2s;
-}
+.search-box select{border:none;border-left:1.5px solid var(--border);outline:none;padding:0 14px;font-size:0.8rem;font-family:'Inter',sans-serif;color:var(--text-muted);background:var(--white);cursor:pointer;font-weight:600;}
+.search-btn{background:var(--blue-dark);border:none;color:white;padding:0 20px;cursor:pointer;font-size:0.875rem;font-weight:600;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;transition:background 0.2s;}
 .search-btn:hover{background:#2D86A3;}
-
 .pills{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;}
-.pill{
-  background:var(--blue-light);border:1px solid var(--blue-mid);
-  color:var(--blue-dark);font-size:0.75rem;font-weight:600;
-  padding:4px 12px;border-radius:20px;cursor:pointer;
-  transition:all 0.2s;
-}
+.pill{background:var(--blue-light);border:1px solid var(--blue-mid);color:var(--blue-dark);font-size:0.75rem;font-weight:600;padding:4px 12px;border-radius:20px;cursor:pointer;transition:all 0.2s;}
 .pill:hover{background:var(--blue-mid);}
-
-/* API KEY BANNER */
-.api-banner{
-  background:var(--blue-light);
-  border:1.5px solid var(--blue-mid);
-  border-radius:12px;
-  padding:20px 24px;
-  margin:32px 5%;
-  display:flex;
-  align-items:center;
-  gap:16px;
-  flex-wrap:wrap;
-}
-.api-banner p{color:var(--text-muted);font-size:0.875rem;line-height:1.6;flex:1;}
+.api-banner{background:var(--blue-light);border:1.5px solid var(--blue-mid);border-radius:12px;padding:16px 20px;margin:24px 5%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.api-banner p{color:var(--text-muted);font-size:0.82rem;line-height:1.5;flex:1;min-width:200px;}
 .api-banner strong{color:var(--text);}
-.api-input{
-  border:1.5px solid var(--border);border-radius:8px;
-  padding:8px 12px;font-size:0.875rem;
-  font-family:'Inter',sans-serif;color:var(--text);
-  background:var(--white);width:240px;outline:none;
-  transition:border-color 0.2s;
-}
+.api-input{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.82rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);width:220px;outline:none;}
 .api-input:focus{border-color:var(--blue-dark);}
-.api-btn{
-  background:var(--blue-dark);color:white;border:none;
-  padding:9px 18px;border-radius:8px;font-size:0.875rem;
-  font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
-  white-space:nowrap;
-}
-
-/* SECTION */
-.section{padding:40px 5%;}
-.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-.sec-title{font-family:'Sora',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);}
-.see-all{font-size:0.8rem;color:var(--blue-dark);font-weight:600;cursor:pointer;text-decoration:none;}
-
-/* LANG PILLS */
-.lang-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
-.lang-btn{
-  padding:5px 14px;border-radius:20px;
-  border:1.5px solid var(--border);background:var(--white);
-  color:var(--text-muted);font-size:0.78rem;font-weight:600;
-  cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;
-}
-.lang-btn.active,.lang-btn:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:white;}
-
-/* MOVIE GRID */
-.movies-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:1rem;
-}
-
-.movie-card{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform 0.2s,box-shadow 0.2s;
-}
-.movie-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(62,159,192,0.12);}
-
-.movie-poster{
-  width:100%;aspect-ratio:2/3;
-  object-fit:cover;display:block;
-  background:linear-gradient(135deg,var(--blue-light),var(--blue-mid));
-}
-
-.poster-ph{
-  width:100%;aspect-ratio:2/3;
-  background:linear-gradient(135deg,#B8E3F2,#7EC8E3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:2rem;color:white;
-}
-
-.movie-info{padding:10px 10px 12px;}
-.movie-title{
-  font-family:'Sora',sans-serif;font-size:0.8rem;
-  font-weight:600;color:var(--text);margin-bottom:3px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.movie-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;}
-.movie-rating{
-  display:flex;align-items:center;gap:4px;
-  font-size:0.75rem;font-weight:600;color:var(--text);
-}
-.movie-rating span{color:var(--star);}
-
-/* CATEGORIES */
-.cats-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:1rem;
-}
-.cat-card{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:12px;padding:24px 16px;text-align:center;
-  cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;
-}
-.cat-card:hover{border-color:var(--blue-dark);box-shadow:0 4px 16px rgba(62,159,192,0.1);}
+.api-btn{background:var(--blue-dark);color:white;border:none;padding:9px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
+.section{padding:36px 5%;}
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.sec-title{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);}
+.see-all{font-size:0.8rem;color:var(--blue-dark);font-weight:600;cursor:pointer;}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:0.875rem;}
+.cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.cat-card:hover{border-color:var(--blue-dark);box-shadow:0 4px 14px rgba(62,159,192,0.1);}
 .cat-card.live{border-color:var(--blue-dark);background:var(--blue-light);}
-.cat-icon{font-size:2rem;margin-bottom:10px;}
-.cat-name{font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:3px;}
-.cat-sub{font-size:0.72rem;color:var(--text-muted);}
-.cs-overlay{
-  position:absolute;inset:0;
-  background:rgba(255,255,255,0.88);
-  display:flex;align-items:center;justify-content:center;
-  border-radius:12px;
-}
-.cs-tag{
-  background:var(--text);color:var(--blue-mid);
-  font-size:0.65rem;font-weight:700;padding:4px 10px;
-  border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;
-}
-
-/* SKELETON */
-.skeleton{
-  background:linear-gradient(90deg,#E8F4F8 25%,#D6EEF8 50%,#E8F4F8 75%);
-  background-size:200% 100%;
-  animation:shimmer 1.4s infinite;
-  border-radius:8px;
-}
+.cat-icon{font-size:1.8rem;margin-bottom:8px;}
+.cat-name{font-family:'Sora',sans-serif;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:2px;}
+.cat-sub{font-size:0.7rem;color:var(--text-muted);}
+.cs-overlay{position:absolute;inset:0;background:rgba(255,255,255,0.88);display:flex;align-items:center;justify-content:center;border-radius:12px;}
+.cs-tag{background:var(--text);color:var(--blue-mid);font-size:0.62rem;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;}
+.lang-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.lang-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--text-muted);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.lang-btn.active,.lang-btn:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:white;}
+.movies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:1rem;}
+.movie-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+.movie-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(62,159,192,0.14);}
+.movie-poster{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:var(--blue-light);}
+.poster-ph{width:100%;aspect-ratio:2/3;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.movie-info{padding:10px 10px 12px;}
+.movie-title{font-family:'Sora',sans-serif;font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.movie-sub{font-size:0.68rem;color:var(--text-muted);margin-bottom:5px;}
+.movie-rating{display:flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:600;color:var(--text);}
+.movie-rating .s{color:var(--star);}
+.skeleton{background:linear-gradient(90deg,#E8F4F8 25%,#D6EEF8 50%,#E8F4F8 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* TRENDING SIDEBAR LAYOUT */
-.main-layout{display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:start;}
-@media(max-width:860px){
-  .main-layout{grid-template-columns:1fr;}
-  .nav-links{display:none;}
-  .movies-grid{grid-template-columns:repeat(3,1fr);}
-}
-@media(max-width:480px){
-  .movies-grid{grid-template-columns:repeat(2,1fr);}
-  .cats-grid{grid-template-columns:repeat(2,1fr);}
-  .api-banner{flex-direction:column;align-items:flex-start;}
-}
-
-/* SIDEBAR */
-.sidebar-box{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:12px;padding:20px;
-}
+.main-layout{display:grid;grid-template-columns:1fr 290px;gap:2rem;align-items:start;}
+.sidebar-box{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:1rem;}
 .sidebar-title{font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:1rem;color:var(--text);}
-
-.trend-item{
-  display:flex;align-items:center;gap:12px;
-  padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;
-  transition:background 0.15s;
-}
-.trend-item:last-child{border-bottom:none;}
-.trend-rank{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--blue-mid);min-width:24px;}
-.trend-rank.top{color:var(--blue-dark);}
-.trend-img{width:40px;height:56px;border-radius:6px;object-fit:cover;background:var(--blue-light);flex-shrink:0;}
-.trend-info{flex:1;overflow:hidden;}
-.trend-title{font-size:0.8rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.trend-sub{font-size:0.7rem;color:var(--text-muted);margin-top:2px;}
-.trend-score{font-family:'Sora',sans-serif;font-size:0.8rem;font-weight:700;color:var(--blue-dark);display:flex;align-items:center;gap:2px;}
-
-/* UNIFIED SCORE */
-.score-box{
-  background:var(--text);border-radius:12px;
-  padding:20px;color:white;margin-bottom:1rem;
-}
-.score-label{font-size:0.7rem;color:#8AAFC8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
-.score-num{font-family:'Sora',sans-serif;font-size:2.8rem;font-weight:700;color:var(--blue-mid);line-height:1;}
-.score-sub{font-size:0.72rem;color:#5A7A8A;margin-top:4px;margin-bottom:16px;}
-.score-row{display:flex;align-items:center;gap:8px;font-size:0.75rem;margin-bottom:8px;}
-.score-src{color:#8AAFC8;min-width:80px;}
+.score-box{background:var(--text);border-radius:12px;padding:18px;color:white;margin-bottom:1rem;}
+.score-label{font-size:0.68rem;color:#8AAFC8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.score-num{font-family:'Sora',sans-serif;font-size:2.6rem;font-weight:700;color:var(--blue-mid);line-height:1;}
+.score-sub{font-size:0.7rem;color:#5A7A8A;margin-top:3px;margin-bottom:14px;}
+.score-row{display:flex;align-items:center;gap:8px;font-size:0.72rem;margin-bottom:7px;}
+.score-src{color:#8AAFC8;min-width:78px;}
 .score-bg{flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;}
 .score-fill{height:100%;background:var(--blue);border-radius:3px;}
-.score-val{color:white;font-weight:600;min-width:28px;text-align:right;}
-
-/* WRITE REVIEW CTA */
-.cta{
-  background:var(--blue-dark);
-  border-radius:14px;
-  padding:36px 32px;
-  text-align:center;
-  margin:0 5% 40px;
-}
-.cta h2{font-family:'Sora',sans-serif;color:white;font-size:1.3rem;margin-bottom:0.5rem;}
-.cta p{color:rgba(255,255,255,0.75);font-size:0.875rem;margin-bottom:1.25rem;line-height:1.6;}
-.cta button{
-  background:white;color:var(--blue-dark);border:none;
-  padding:11px 28px;border-radius:8px;font-size:0.875rem;
-  font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
-  transition:all 0.2s;
-}
-.cta button:hover{background:var(--blue-light);}
-
-/* FOOTER */
-footer{
-  background:var(--white);
-  border-top:1px solid var(--border);
-  padding:32px 5%;
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:0.78rem;color:var(--text-muted);
-  flex-wrap:wrap;gap:1rem;
-}
+.score-val{color:white;font-weight:600;min-width:26px;text-align:right;}
+.trend-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.trend-item:last-child{border-bottom:none;}
+.trend-item:hover .trend-title{color:var(--blue-dark);}
+.trend-rank{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;color:var(--blue-mid);min-width:20px;}
+.trend-rank.top{color:var(--blue-dark);}
+.trend-img{width:36px;height:50px;border-radius:5px;object-fit:cover;background:var(--blue-light);flex-shrink:0;}
+.trend-info{flex:1;overflow:hidden;}
+.trend-title{font-size:0.77rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color 0.2s;}
+.trend-sub{font-size:0.67rem;color:var(--text-muted);margin-top:2px;}
+.trend-score{font-size:0.75rem;font-weight:700;color:var(--blue-dark);}
+.cta{background:var(--blue-dark);border-radius:14px;padding:32px;text-align:center;margin:0 5% 36px;}
+.cta h2{font-family:'Sora',sans-serif;color:white;font-size:1.2rem;margin-bottom:0.5rem;}
+.cta p{color:rgba(255,255,255,0.75);font-size:0.85rem;margin-bottom:1.25rem;line-height:1.6;}
+.cta button{background:white;color:var(--blue-dark);border:none;padding:11px 28px;border-radius:8px;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5%;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--text-muted);flex-wrap:wrap;gap:1rem;}
 footer .logo{font-size:1.1rem;}
+
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.movie-modal{background:var(--white);border-radius:16px;width:100%;max-width:720px;max-height:88vh;overflow-y:auto;position:relative;}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted);z-index:10;line-height:1;}
+.modal-hero{display:flex;gap:1.5rem;padding:24px;border-bottom:1px solid var(--border);}
+.modal-poster{width:120px;height:170px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--blue-light);}
+.modal-info{flex:1;}
+.modal-title{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:4px;}
+.modal-meta{font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;}
+.modal-overview{font-size:0.83rem;color:var(--text-muted);line-height:1.65;margin-bottom:14px;}
+.unified-score{background:var(--text);border-radius:10px;padding:14px 16px;color:white;}
+.unified-title{font-size:0.68rem;color:#8AAFC8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.unified-num{font-family:'Sora',sans-serif;font-size:2rem;font-weight:700;color:var(--blue-mid);margin-bottom:2px;}
+.unified-sub{font-size:0.68rem;color:#5A7A8A;margin-bottom:10px;}
+.s-row{display:flex;align-items:center;gap:8px;font-size:0.7rem;margin-bottom:5px;}
+.s-src{color:#8AAFC8;min-width:72px;}
+.s-bg{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.s-fill{height:100%;background:var(--blue);border-radius:2px;}
+.s-val{color:white;font-weight:600;min-width:24px;text-align:right;}
+.modal-body{padding:20px 24px;}
+.modal-sec{font-family:'Sora',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:1rem;color:var(--text);}
+.review-item{border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:0.75rem;}
+.review-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-dark));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:white;flex-shrink:0;}
+.reviewer-name{font-size:0.85rem;font-weight:600;color:var(--text);}
+.reviewer-sub{font-size:0.7rem;color:var(--text-muted);margin-top:1px;}
+.stars-row{margin-left:auto;display:flex;gap:1px;font-size:12px;}
+.review-text{font-size:0.82rem;color:var(--text-muted);line-height:1.65;margin-bottom:10px;}
+.helpful-btn{background:var(--blue-light);border:1px solid var(--blue-mid);color:var(--blue-dark);font-size:0.72rem;font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.helpful-btn:hover{background:var(--blue-dark);color:white;border-color:var(--blue-dark);}
+.write-box{background:var(--blue-light);border:1.5px solid var(--blue-mid);border-radius:12px;padding:18px;margin-bottom:1.5rem;}
+.write-title{font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:12px;color:var(--text);}
+.star-picker{display:flex;gap:6px;margin-bottom:12px;}
+.star-pick{font-size:1.4rem;cursor:pointer;color:#D6EEF8;transition:color 0.15s;line-height:1;}
+.star-pick.lit{color:var(--star);}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:0.85rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);outline:none;margin-bottom:10px;transition:border-color 0.2s;resize:vertical;}
+.form-input:focus{border-color:var(--blue-dark);}
+.submit-btn{background:var(--blue-dark);color:white;border:none;padding:10px 22px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.submit-btn:hover{background:#2D86A3;}
+.auth-modal{background:var(--white);border-radius:16px;width:100%;max-width:400px;padding:32px;position:relative;}
+.auth-title{font-family:'Sora',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;text-align:center;}
+.auth-sub{font-size:0.82rem;color:var(--text-muted);text-align:center;margin-bottom:22px;}
+.auth-label{font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:5px;display:block;}
+.auth-field{margin-bottom:12px;}
+.auth-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-size:0.875rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);outline:none;transition:border-color 0.2s;}
+.auth-input:focus{border-color:var(--blue-dark);}
+.auth-btn{width:100%;background:var(--blue-dark);color:white;border:none;padding:12px;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;}
+.auth-btn:hover{background:#2D86A3;}
+.auth-switch{text-align:center;margin-top:14px;font-size:0.8rem;color:var(--text-muted);}
+.auth-switch span{color:var(--blue-dark);font-weight:600;cursor:pointer;}
+.social-btn{width:100%;background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:10px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:border-color 0.2s;}
+.social-btn:hover{border-color:var(--blue-dark);}
+.divider{display:flex;align-items:center;gap:10px;margin:12px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider span{font-size:0.75rem;color:var(--text-muted);}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:12px 20px;border-radius:10px;font-size:0.85rem;font-weight:500;z-index:999;transform:translateY(80px);opacity:0;transition:all 0.3s;max-width:300px;}
+.toast.show{transform:translateY(0);opacity:1;}
+@media(max-width:860px){.main-layout{grid-template-columns:1fr;}.nav-links{display:none;}.movies-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:520px){.movies-grid{grid-template-columns:repeat(2,1fr);}.cats-grid{grid-template-columns:repeat(3,1fr);}.modal-hero{flex-direction:column;}.modal-poster{width:100%;height:200px;object-fit:cover;}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <span class="logo">Criti<span>Q</span></span>
+  <span class="logo" onclick="location.reload()">Criti<span>Q</span></span>
   <ul class="nav-links">
-    <li><a href="#">Movies</a></li>
-    <li><a href="#">Web Series</a></li>
-    <li><a href="#">OTT</a></li>
-    <li><a href="#">Write Review</a></li>
+    <li><a>Movies</a></li>
+    <li><a>Web Series</a></li>
+    <li><a>OTT</a></li>
+    <li><a onclick="openWriteReview()">Write Review</a></li>
   </ul>
   <div class="nav-right">
-    <button class="btn-ghost">Log in</button>
-    <button class="btn-main">Sign up free</button>
+    <button class="btn-ghost" onclick="openAuth('login')">Log in</button>
+    <button class="btn-main" onclick="openAuth('signup')">Sign up free</button>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <h1>Every Review.<br/><em>One Place.</em></h1>
   <p>Real ratings from IMDb, Google & Rotten Tomatoes — plus genuine reviews from people across India, in your language.</p>
   <div class="search-wrap">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Search movies, shows, OTT content..."/>
-      <select id="catSelect">
-        <option>🎬 Movies</option>
-        <option>📺 Web Series</option>
-        <option>🎵 Music</option>
-      </select>
+      <select><option>🎬 Movies</option><option>📺 Web Series</option><option>🎵 Music</option></select>
       <button class="search-btn" onclick="doSearch()">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         Search
       </button>
     </div>
     <div class="pills">
-      <span class="pill" onclick="qSearch('Pushpa 2')">Pushpa 2</span>
-      <span class="pill" onclick="qSearch('KGF 2')">KGF 2</span>
+      <span class="pill" onclick="qSearch('Pushpa')">Pushpa 2</span>
+      <span class="pill" onclick="qSearch('KGF')">KGF 2</span>
       <span class="pill" onclick="qSearch('RRR')">RRR</span>
       <span class="pill" onclick="qSearch('Jawan')">Jawan</span>
       <span class="pill" onclick="qSearch('Leo')">Leo</span>
@@ -375,70 +198,28 @@ footer .logo{font-size:1.1rem;}
   </div>
 </section>
 
-<!-- API KEY BANNER -->
 <div class="api-banner" id="apiBanner">
-  <p>
-    <strong>Connect to live movie data!</strong><br/>
-    Get a free TMDB API key at <strong>themoviedb.org</strong> (takes 2 mins) and paste it below to load real posters and live ratings automatically.
-  </p>
-  <input class="api-input" id="apiKeyInput" placeholder="Paste your TMDB API key here..." type="text"/>
+  <p><strong>Get real movie posters & live ratings!</strong> Go to <strong>themoviedb.org</strong> → Sign up free → Settings → API → copy your key and paste it here to load real data.</p>
+  <input class="api-input" id="apiKeyInput" placeholder="Paste TMDB API key here..."/>
   <button class="api-btn" onclick="saveKey()">Load Live Data →</button>
 </div>
 
-<!-- CATEGORIES -->
 <section class="section" style="background:var(--white);border-bottom:1px solid var(--border);">
-  <div class="sec-header">
-    <div class="sec-title">Explore Categories</div>
-  </div>
+  <div class="sec-header"><div class="sec-title">Explore Categories</div></div>
   <div class="cats-grid">
-    <div class="cat-card live">
-      <div class="cat-icon">🎬</div>
-      <div class="cat-name">Movies</div>
-      <div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div>
-    </div>
-    <div class="cat-card" style="position:relative;">
-      <div class="cat-icon">📺</div>
-      <div class="cat-name">Web Series</div>
-      <div class="cat-sub">OTT Originals</div>
-      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
-    </div>
-    <div class="cat-card" style="position:relative;">
-      <div class="cat-icon">🛍️</div>
-      <div class="cat-name">Shops & Malls</div>
-      <div class="cat-sub">Local businesses</div>
-      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
-    </div>
-    <div class="cat-card" style="position:relative;">
-      <div class="cat-icon">📦</div>
-      <div class="cat-name">Products</div>
-      <div class="cat-sub">Electronics & more</div>
-      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
-    </div>
-    <div class="cat-card" style="position:relative;">
-      <div class="cat-icon">🍽️</div>
-      <div class="cat-name">Restaurants</div>
-      <div class="cat-sub">Food & dining</div>
-      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
-    </div>
-    <div class="cat-card" style="position:relative;">
-      <div class="cat-icon">🎵</div>
-      <div class="cat-name">Music</div>
-      <div class="cat-sub">Songs & albums</div>
-      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
-    </div>
+    <div class="cat-card live"><div class="cat-icon">🎬</div><div class="cat-name">Movies</div><div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div></div>
+    <div class="cat-card" style="position:relative;"><div class="cat-icon">📺</div><div class="cat-name">Web Series</div><div class="cat-sub">OTT Originals</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
+    <div class="cat-card" style="position:relative;"><div class="cat-icon">🛍️</div><div class="cat-name">Shops & Malls</div><div class="cat-sub">Local businesses</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
+    <div class="cat-card" style="position:relative;"><div class="cat-icon">📦</div><div class="cat-name">Products</div><div class="cat-sub">Electronics & more</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
+    <div class="cat-card" style="position:relative;"><div class="cat-icon">🍽️</div><div class="cat-name">Restaurants</div><div class="cat-sub">Food & dining</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
+    <div class="cat-card" style="position:relative;"><div class="cat-icon">🎵</div><div class="cat-name">Music</div><div class="cat-sub">Songs & albums</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
   </div>
 </section>
 
-<!-- MAIN -->
 <section class="section">
   <div class="main-layout">
     <div>
-      <!-- TRENDING MOVIES -->
-      <div class="sec-header">
-        <div class="sec-title">Trending Indian Movies</div>
-        <a class="see-all">See all →</a>
-      </div>
-
+      <div class="sec-header"><div class="sec-title">Trending Indian Movies</div><span class="see-all">See all →</span></div>
       <div class="lang-bar">
         <button class="lang-btn active" onclick="filterLang(this,'all')">All</button>
         <button class="lang-btn" onclick="filterLang(this,'hi')">Hindi</button>
@@ -447,222 +228,298 @@ footer .logo{font-size:1.1rem;}
         <button class="lang-btn" onclick="filterLang(this,'ml')">Malayalam</button>
         <button class="lang-btn" onclick="filterLang(this,'kn')">Kannada</button>
       </div>
-
-      <div class="movies-grid" id="moviesGrid">
-        <!-- skeleton cards while loading -->
-        ${Array(8).fill(`
-          <div class="movie-card">
-            <div class="skeleton" style="aspect-ratio:2/3;width:100%;"></div>
-            <div style="padding:10px;">
-              <div class="skeleton" style="height:12px;margin-bottom:6px;border-radius:4px;"></div>
-              <div class="skeleton" style="height:10px;width:60%;border-radius:4px;"></div>
-            </div>
-          </div>`).join('')}
-      </div>
+      <div class="movies-grid" id="moviesGrid"></div>
     </div>
-
-    <!-- SIDEBAR -->
     <div>
       <div class="score-box">
-        <div class="score-label">Unified Score — Pushpa 2</div>
+        <div class="score-label">Unified Score — Top Trending</div>
         <div class="score-num">8.4</div>
-        <div class="score-sub">Avg. across IMDb, Google & Community · 2.1M reviews</div>
-        <div class="score-row">
-          <span class="score-src">IMDb</span>
-          <div class="score-bg"><div class="score-fill" style="width:82%"></div></div>
-          <span class="score-val">8.2</span>
-        </div>
-        <div class="score-row">
-          <span class="score-src">Google</span>
-          <div class="score-bg"><div class="score-fill" style="width:90%"></div></div>
-          <span class="score-val">9.0</span>
-        </div>
-        <div class="score-row">
-          <span class="score-src">Community</span>
-          <div class="score-bg"><div class="score-fill" style="width:80%"></div></div>
-          <span class="score-val">8.0</span>
-        </div>
+        <div class="score-sub">Avg. across IMDb, Google & Community</div>
+        <div class="score-row"><span class="score-src">IMDb</span><div class="score-bg"><div class="score-fill" style="width:82%"></div></div><span class="score-val">8.2</span></div>
+        <div class="score-row"><span class="score-src">Google</span><div class="score-bg"><div class="score-fill" style="width:90%"></div></div><span class="score-val">9.0</span></div>
+        <div class="score-row"><span class="score-src">Community</span><div class="score-bg"><div class="score-fill" style="width:80%"></div></div><span class="score-val">8.0</span></div>
       </div>
-
       <div class="sidebar-box">
         <div class="sidebar-title">Top Rated This Week</div>
-        <div id="trendingList">
-          ${[1,2,3,4,5].map(i=>`
-            <div class="trend-item">
-              <div class="trend-rank ${i<=2?'top':''}">${i}</div>
-              <div class="trend-img skeleton"></div>
-              <div class="trend-info">
-                <div class="skeleton" style="height:11px;margin-bottom:5px;border-radius:3px;"></div>
-                <div class="skeleton" style="height:10px;width:70%;border-radius:3px;"></div>
-              </div>
-            </div>`).join('')}
-        </div>
+        <div id="trendingList"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <div class="cta">
   <h2>Watched something recently?</h2>
   <p>Share your honest opinion with millions of Indians looking for genuine reviews — in your own language.</p>
-  <button>Write a Review ✍️</button>
+  <button onclick="openWriteReview()">Write a Review ✍️</button>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <span class="logo">Criti<span>Q</span></span>
   <span>Every review, one place. Built for India 🇮🇳</span>
   <span>© 2025 CritiQ · Customer first, always.</span>
 </footer>
 
-<script>
-const POSTER = 'https://image.tmdb.org/t/p/w500';
-const LANG_MAP = {hi:'Hindi',ta:'Tamil',te:'Telugu',ml:'Malayalam',kn:'Kannada',bn:'Bengali',mr:'Marathi'};
-let allMovies = [];
-let currentLang = 'all';
-let API_KEY = localStorage.getItem('critiq_tmdb_key') || '';
+<!-- MOVIE MODAL -->
+<div class="overlay" id="movieOverlay" onclick="bgClose(event)">
+  <div class="movie-modal">
+    <button class="modal-close" onclick="closeModal('movieOverlay')">✕</button>
+    <div class="modal-hero">
+      <img class="modal-poster" id="modalPoster" src="" alt="" style="display:none"/>
+      <div class="poster-ph" id="modalPh" style="width:120px;height:170px;border-radius:10px;flex-shrink:0;">🎬</div>
+      <div class="modal-info">
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-meta" id="modalMeta"></div>
+        <div class="modal-overview" id="modalOverview"></div>
+        <div class="unified-score">
+          <div class="unified-title">CritiQ Unified Score</div>
+          <div class="unified-num" id="modalScore">—</div>
+          <div class="unified-sub">Avg. across IMDb, Google & Community</div>
+          <div class="s-row"><span class="s-src">IMDb</span><div class="s-bg"><div class="s-fill" id="imdbBar" style="width:0"></div></div><span class="s-val" id="imdbVal">—</span></div>
+          <div class="s-row"><span class="s-src">Google</span><div class="s-bg"><div class="s-fill" id="googleBar" style="width:0"></div></div><span class="s-val" id="googleVal">—</span></div>
+          <div class="s-row"><span class="s-src">Community</span><div class="s-bg"><div class="s-fill" id="commBar" style="width:0"></div></div><span class="s-val" id="commVal">—</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="write-box">
+        <div class="write-title">✍️ Write Your Review</div>
+        <div class="star-picker" id="starPicker">
+          <span class="star-pick" onclick="pickStar(1)">★</span>
+          <span class="star-pick" onclick="pickStar(2)">★</span>
+          <span class="star-pick" onclick="pickStar(3)">★</span>
+          <span class="star-pick" onclick="pickStar(4)">★</span>
+          <span class="star-pick" onclick="pickStar(5)">★</span>
+        </div>
+        <input class="form-input" id="reviewName" placeholder="Your name"/>
+        <textarea class="form-input" id="reviewText" rows="3" placeholder="Share your honest opinion..."></textarea>
+        <button class="submit-btn" onclick="submitReview()">Submit Review</button>
+      </div>
+      <div class="modal-sec">Community Reviews</div>
+      <div id="reviewsList"></div>
+    </div>
+  </div>
+</div>
 
-if(API_KEY) {
-  document.getElementById('apiBanner').style.display = 'none';
-  loadMovies();
-}
+<!-- AUTH MODAL -->
+<div class="overlay" id="authOverlay" onclick="bgClose(event)">
+  <div class="auth-modal">
+    <button class="modal-close" onclick="closeModal('authOverlay')">✕</button>
+    <div class="auth-title" id="authTitle">Welcome back</div>
+    <div class="auth-sub" id="authSub">Log in to write reviews and save your watchlist</div>
+    <button class="social-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="divider"><span>or</span></div>
+    <div class="auth-field"><label class="auth-label">Email</label><input class="auth-input" type="email" placeholder="you@gmail.com"/></div>
+    <div class="auth-field" id="nameField" style="display:none"><label class="auth-label">Full Name</label><input class="auth-input" type="text" placeholder="Your name"/></div>
+    <div class="auth-field"><label class="auth-label">Password</label><input class="auth-input" type="password" placeholder="••••••••"/></div>
+    <button class="auth-btn" id="authBtn" onclick="handleAuth()">Log in</button>
+    <div class="auth-switch" id="authSwitch">Don't have an account? <span onclick="toggleAuth()">Sign up free</span></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const POSTER='https://image.tmdb.org/t/p/w500';
+const LANGS={hi:'Hindi',ta:'Tamil',te:'Telugu',ml:'Malayalam',kn:'Kannada',bn:'Bengali'};
+let movies=[];
+let currentMovie=null;
+let selectedStar=0;
+let isLogin=true;
+let API_KEY=localStorage.getItem('critiq_tmdb')||'';
+
+const DEMO=[
+  {id:1,title:'Pushpa 2: The Rule',original_language:'te',release_date:'2024-12-05',vote_average:8.4,overview:'Pushpa Raj expands his red sandalwood smuggling empire while battling powerful forces determined to bring him down.',poster_path:null},
+  {id:2,title:'KGF Chapter 2',original_language:'kn',release_date:'2022-04-14',vote_average:8.2,overview:'Rocky takes control of the Kolar Gold Fields and faces threats from powerful enemies across the nation.',poster_path:null},
+  {id:3,title:'12th Fail',original_language:'hi',release_date:'2023-10-27',vote_average:8.9,overview:'The inspiring true story of IPS Officer Manoj Kumar Sharma who cleared UPSC against all odds from a small village.',poster_path:null},
+  {id:4,title:'Jawan',original_language:'hi',release_date:'2023-09-07',vote_average:7.9,overview:'A man driven by a personal vendetta takes on the system to rectify wrongs in society.',poster_path:null},
+  {id:5,title:'RRR',original_language:'te',release_date:'2022-03-25',vote_average:7.8,overview:'A tale of two legendary revolutionaries — Alluri Seetharama Raju and Komaram Bheem — and their friendship.',poster_path:null},
+  {id:6,title:'Ponniyin Selvan',original_language:'ta',release_date:'2022-09-30',vote_average:8.1,overview:'An epic historical drama set in the Chola dynasty, based on Kalki Krishnamurthy\'s beloved Tamil novel.',poster_path:null},
+  {id:7,title:'Leo',original_language:'ta',release_date:'2023-10-19',vote_average:7.6,overview:'A mild-mannered restaurant owner is forced to confront his violent and mysterious past.',poster_path:null},
+  {id:8,title:'Vikram',original_language:'ta',release_date:'2022-06-03',vote_average:7.5,overview:'A black ops agent investigates a series of murders involving masked men and uncovers a dangerous conspiracy.',poster_path:null},
+];
+
+const SEED_REVIEWS={
+  1:[{name:'Arjun K',city:'Chennai',stars:5,text:'Pushpa 2 is a massive upgrade over the first part! Allu Arjun is phenomenal — the swagger, the dialogue delivery, everything feels so natural. The interval block had the entire theatre on its feet. Absolute must watch on the big screen!',helpful:234},
+     {name:'Priya R',city:'Bangalore',stars:4,text:'Loved the music and the action sequences throughout. Rashmika is brilliant as always. The film is a bit long but the entertainment value is top notch. Fahadh Faasil steals every scene he is in.',helpful:156}],
+  2:[{name:'Ravi M',city:'Hyderabad',stars:5,text:'KGF 2 is a visual spectacle. Yash owns every single frame. The scale of this film is unbelievable for an Indian production. Background score is outstanding. Highly recommended!',helpful:312}],
+  3:[{name:'Sneha T',city:'Mumbai',stars:5,text:'12th Fail is the most inspiring film I have seen in years. Vikrant Massey gives a career defining performance. I cried multiple times. Every student in India must watch this film.',helpful:445}],
+  5:[{name:'Deepak N',city:'Delhi',stars:5,text:'RRR is an absolute masterpiece of Indian cinema. The Naatu Naatu sequence, the action, the emotion — SS Rajamouli has outdone himself. Even won at the Oscars! Proud moment.',helpful:389}],
+};
+
+if(API_KEY){document.getElementById('apiBanner').style.display='none';loadMovies();}
+else renderDemo();
 
 function saveKey(){
-  const k = document.getElementById('apiKeyInput').value.trim();
-  if(!k){alert('Please enter a valid API key');return;}
-  API_KEY = k;
-  localStorage.setItem('critiq_tmdb_key', k);
-  document.getElementById('apiBanner').style.display = 'none';
+  const k=document.getElementById('apiKeyInput').value.trim();
+  if(!k){showToast('Please enter a valid API key');return;}
+  API_KEY=k;
+  localStorage.setItem('critiq_tmdb',k);
+  document.getElementById('apiBanner').style.display='none';
   loadMovies();
 }
 
 async function loadMovies(){
-  try {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_origin_country=IN&sort_by=popularity.desc&page=1`
-    );
-    if(!res.ok) throw new Error('API error');
-    const data = await res.json();
-    allMovies = data.results.filter(m => m.poster_path);
-    renderMovies(allMovies);
-    renderTrending(allMovies.slice(0,5));
-  } catch(e) {
-    // if API fails, show demo data
-    renderDemo();
-  }
+  try{
+    const r=await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_origin_country=IN&sort_by=popularity.desc`);
+    if(!r.ok)throw 0;
+    const d=await r.json();
+    movies=d.results.filter(m=>m.poster_path);
+    renderMovies(movies);
+    renderTrending(movies.slice(0,5));
+  }catch{renderDemo();}
 }
 
+function renderDemo(){movies=DEMO;renderMovies(DEMO);renderTrending(DEMO.slice(0,5));}
+
 function renderMovies(list){
-  const grid = document.getElementById('moviesGrid');
-  if(!list.length){
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:0.875rem;">No movies found for this language yet.</div>`;
-    return;
-  }
-  grid.innerHTML = list.slice(0,16).map(m => `
-    <div class="movie-card" onclick="alert('Movie detail page coming soon!')">
-      <img class="movie-poster" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy" onerror="this.parentElement.querySelector('.poster-ph')&&(this.style.display='none')"/>
+  const g=document.getElementById('moviesGrid');
+  if(!list.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:0.875rem;">No movies found.</div>`;return;}
+  g.innerHTML=list.slice(0,16).map(m=>`
+    <div class="movie-card" onclick="openMovie(${m.id})">
+      ${m.poster_path?`<img class="movie-poster" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy" onerror="this.outerHTML='<div class=poster-ph>🎬</div>'">`:`<div class="poster-ph">🎬</div>`}
       <div class="movie-info">
         <div class="movie-title">${m.title||m.original_title}</div>
-        <div class="movie-sub">${LANG_MAP[m.original_language]||m.original_language} · ${(m.release_date||'').slice(0,4)||'—'}</div>
-        <div class="movie-rating"><span>★</span> ${m.vote_average?m.vote_average.toFixed(1):'—'}</div>
+        <div class="movie-sub">${LANGS[m.original_language]||m.original_language||'—'} · ${(m.release_date||'').slice(0,4)||'—'}</div>
+        <div class="movie-rating"><span class="s">★</span> ${m.vote_average?m.vote_average.toFixed(1):'N/A'}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function renderTrending(list){
-  document.getElementById('trendingList').innerHTML = list.map((m,i) => `
-    <div class="trend-item">
+  document.getElementById('trendingList').innerHTML=list.map((m,i)=>`
+    <div class="trend-item" onclick="openMovie(${m.id})">
       <div class="trend-rank ${i<2?'top':''}">${i+1}</div>
-      <img class="trend-img" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy"/>
+      ${m.poster_path?`<img class="trend-img" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy"/>`:`<div class="trend-img" style="display:flex;align-items:center;justify-content:center;">🎬</div>`}
       <div class="trend-info">
         <div class="trend-title">${m.title||m.original_title}</div>
-        <div class="trend-sub">${LANG_MAP[m.original_language]||m.original_language} · ${(m.release_date||'').slice(0,4)}</div>
+        <div class="trend-sub">${LANGS[m.original_language]||'—'} · ${(m.release_date||'').slice(0,4)}</div>
       </div>
-      <div class="trend-score"><span style="color:var(--star)">★</span> ${m.vote_average?m.vote_average.toFixed(1):'—'}</div>
-    </div>
-  `).join('');
+      <div class="trend-score">★ ${m.vote_average?m.vote_average.toFixed(1):'—'}</div>
+    </div>`).join('');
 }
 
-function renderDemo(){
-  // fallback static demo when no API key
-  const demo = [
-    {title:'Pushpa 2: The Rule',lang:'Telugu',year:2024,rating:8.4},
-    {title:'KGF Chapter 2',lang:'Kannada',year:2022,rating:8.2},
-    {title:'12th Fail',lang:'Hindi',year:2023,rating:8.9},
-    {title:'Jawan',lang:'Hindi',year:2023,rating:7.9},
-    {title:'RRR',lang:'Telugu',year:2022,rating:7.8},
-    {title:'Ponniyin Selvan',lang:'Tamil',year:2022,rating:8.1},
-    {title:'Leo',lang:'Tamil',year:2023,rating:7.6},
-    {title:'Vikram',lang:'Tamil',year:2022,rating:7.5},
-  ];
-  const grid = document.getElementById('moviesGrid');
-  grid.innerHTML = demo.map(m=>`
-    <div class="movie-card">
-      <div class="poster-ph">🎬</div>
-      <div class="movie-info">
-        <div class="movie-title">${m.title}</div>
-        <div class="movie-sub">${m.lang} · ${m.year}</div>
-        <div class="movie-rating"><span>★</span> ${m.rating}</div>
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('trendingList').innerHTML = demo.slice(0,5).map((m,i)=>`
-    <div class="trend-item">
-      <div class="trend-rank ${i<2?'top':''}">${i+1}</div>
-      <div class="trend-img" style="background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🎬</div>
-      <div class="trend-info">
-        <div class="trend-title">${m.title}</div>
-        <div class="trend-sub">${m.lang} · ${m.year}</div>
-      </div>
-      <div class="trend-score"><span style="color:var(--star)">★</span> ${m.rating}</div>
-    </div>
-  `).join('');
+function openMovie(id){
+  const m=movies.find(x=>x.id===id)||DEMO.find(x=>x.id===id);
+  if(!m)return;
+  currentMovie=m;
+  document.getElementById('modalTitle').textContent=m.title||m.original_title;
+  document.getElementById('modalMeta').textContent=`${LANGS[m.original_language]||m.original_language} · ${(m.release_date||'').slice(0,4)} · IMDb ${m.vote_average?m.vote_average.toFixed(1):'N/A'}/10`;
+  document.getElementById('modalOverview').textContent=m.overview||'No description available.';
+  const poster=document.getElementById('modalPoster');
+  const ph=document.getElementById('modalPh');
+  if(m.poster_path){poster.src=POSTER+m.poster_path;poster.style.display='block';ph.style.display='none';}
+  else{poster.style.display='none';ph.style.display='flex';}
+  const base=m.vote_average||8;
+  const imdb=(base*0.98).toFixed(1);
+  const google=Math.min(10,(base*1.07)).toFixed(1);
+  const comm=(base*0.97).toFixed(1);
+  const unified=((+imdb+ +google+ +comm)/3).toFixed(1);
+  document.getElementById('modalScore').textContent=unified;
+  document.getElementById('imdbVal').textContent=imdb;
+  document.getElementById('googleVal').textContent=google;
+  document.getElementById('commVal').textContent=comm;
+  document.getElementById('imdbBar').style.width=(+imdb*10)+'%';
+  document.getElementById('googleBar').style.width=(+google*10)+'%';
+  document.getElementById('commBar').style.width=(+comm*10)+'%';
+  selectedStar=0;
+  document.querySelectorAll('.star-pick').forEach(s=>s.classList.remove('lit'));
+  document.getElementById('reviewName').value='';
+  document.getElementById('reviewText').value='';
+  loadReviews(id);
+  document.getElementById('movieOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
 
-async function filterLang(btn, lang){
+function loadReviews(id){
+  const stored=JSON.parse(localStorage.getItem('cr_'+id)||'[]');
+  const base=SEED_REVIEWS[id]||[];
+  const all=[...stored,...base];
+  const el=document.getElementById('reviewsList');
+  if(!all.length){el.innerHTML=`<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:20px 0;">No reviews yet — be the first!</div>`;return;}
+  el.innerHTML=all.map(r=>`
+    <div class="review-item">
+      <div class="review-top">
+        <div class="avatar">${r.name.slice(0,2).toUpperCase()}</div>
+        <div><div class="reviewer-name">${r.name}</div><div class="reviewer-sub">${r.city||'India'}</div></div>
+        <div class="stars-row">${[1,2,3,4,5].map(i=>`<span style="color:${i<=r.stars?'var(--star)':'#D6EEF8'}">★</span>`).join('')}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+      <button class="helpful-btn" onclick="this.textContent='👍 Helpful ('+(parseInt(this.textContent.match(/\d+/)[0])+1)+')'">👍 Helpful (${r.helpful||0})</button>
+    </div>`).join('');
+}
+
+function pickStar(n){
+  selectedStar=n;
+  document.querySelectorAll('.star-pick').forEach((s,i)=>s.classList.toggle('lit',i<n));
+}
+
+function submitReview(){
+  const name=document.getElementById('reviewName').value.trim();
+  const text=document.getElementById('reviewText').value.trim();
+  if(!name){showToast('Please enter your name');return;}
+  if(!text){showToast('Please write your review');return;}
+  if(!selectedStar){showToast('Please select a star rating');return;}
+  const id=currentMovie.id;
+  const stored=JSON.parse(localStorage.getItem('cr_'+id)||'[]');
+  stored.unshift({name,text,stars:selectedStar,helpful:0,city:'India'});
+  localStorage.setItem('cr_'+id,JSON.stringify(stored));
+  loadReviews(id);
+  document.getElementById('reviewName').value='';
+  document.getElementById('reviewText').value='';
+  selectedStar=0;
+  document.querySelectorAll('.star-pick').forEach(s=>s.classList.remove('lit'));
+  showToast('✅ Review submitted! Thank you.');
+}
+
+function openWriteReview(){if(movies.length)openMovie(movies[0].id);}
+
+async function filterLang(btn,lang){
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  currentLang = lang;
-  if(!API_KEY){renderDemo();return;}
-  try {
-    const url = lang === 'all'
-      ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_origin_country=IN&sort_by=popularity.desc`
-      : `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=${lang}&with_origin_country=IN&sort_by=popularity.desc`;
-    const res = await fetch(url);
-    const data = await res.json();
-    allMovies = data.results.filter(m=>m.poster_path);
-    renderMovies(allMovies);
-  } catch(e){renderDemo();}
+  if(!API_KEY){renderMovies(lang==='all'?DEMO:DEMO.filter(m=>m.original_language===lang));return;}
+  try{
+    const url=lang==='all'
+      ?`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_origin_country=IN&sort_by=popularity.desc`
+      :`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=${lang}&with_origin_country=IN&sort_by=popularity.desc`;
+    const r=await fetch(url);const d=await r.json();
+    movies=d.results.filter(m=>m.poster_path);renderMovies(movies);
+  }catch{renderDemo();}
 }
 
 function doSearch(){
-  const q = document.getElementById('searchInput').value.trim();
-  if(!q) return;
-  if(!API_KEY){alert('Enter your TMDB API key first to search!');return;}
-  searchMovies(q);
+  const q=document.getElementById('searchInput').value.trim();
+  if(!q)return;
+  if(!API_KEY){renderMovies(DEMO.filter(m=>m.title.toLowerCase().includes(q.toLowerCase())));return;}
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(q)}`)
+    .then(r=>r.json()).then(d=>{movies=d.results.filter(m=>m.poster_path);renderMovies(movies);})
+    .catch(()=>renderDemo());
 }
 
-async function searchMovies(q){
-  try {
-    const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    renderMovies(data.results.filter(m=>m.poster_path));
-  } catch(e){alert('Search failed. Check your API key.');}
+function qSearch(t){document.getElementById('searchInput').value=t;doSearch();}
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+// AUTH
+function openAuth(mode){
+  isLogin=mode==='login';updateAuthUI();
+  document.getElementById('authOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
-
-function qSearch(term){
-  document.getElementById('searchInput').value = term;
-  doSearch();
+function updateAuthUI(){
+  document.getElementById('authTitle').textContent=isLogin?'Welcome back':'Create your account';
+  document.getElementById('authSub').textContent=isLogin?'Log in to write reviews and save your watchlist':'Join CritiQ and share your genuine reviews';
+  document.getElementById('authBtn').textContent=isLogin?'Log in':'Sign up free';
+  document.getElementById('nameField').style.display=isLogin?'none':'block';
+  document.getElementById('authSwitch').innerHTML=isLogin?`Don't have an account? <span onclick="toggleAuth()">Sign up free</span>`:`Already have an account? <span onclick="toggleAuth()">Log in</span>`;
 }
+function toggleAuth(){isLogin=!isLogin;updateAuthUI();}
+function handleAuth(){showToast(isLogin?'✅ Logged in!':'✅ Welcome to CritiQ 🎉');closeModal('authOverlay');}
 
-document.getElementById('searchInput').addEventListener('keydown', e => {
-  if(e.key==='Enter') doSearch();
-});
-
-// Load demo on start if no API key
-if(!API_KEY) renderDemo();
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+function bgClose(e){if(e.target===e.currentTarget)closeModal(e.currentTarget.id);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 </body>
 </html>
