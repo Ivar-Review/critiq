@@ -206,7 +206,7 @@ footer .logo{font-size:1.1rem;}
   </div>
 </section>
 
-<div class="api-banner" id="apiBanner">
+<div class="api-banner" id="apiBanner" style="display:none">
   <p><strong>Get real movie posters & live ratings!</strong> Go to <strong>themoviedb.org</strong> → Sign up free → Settings → API → copy your key and paste it here to load real data.</p>
   <input class="api-input" id="apiKeyInput" placeholder="Paste TMDB API key here..."/>
   <button class="api-btn" onclick="saveKey()">Load Live Data →</button>
@@ -336,17 +336,17 @@ let movies=[];
 let currentMovie=null;
 let selectedStar=0;
 let isLogin=true;
-let API_KEY=localStorage.getItem('critiq_tmdb')||'';
+let API_KEY=localStorage.getItem('critiq_tmdb')||'cb52dd4023196b9038e639cc8649711d';
 
 const DEMO=[
-  {id:1,title:'Pushpa 2: The Rule',original_language:'te',release_date:'2024-12-05',vote_average:8.4,overview:'Pushpa Raj expands his red sandalwood smuggling empire while battling powerful forces determined to bring him down.',poster_path:null},
-  {id:2,title:'KGF Chapter 2',original_language:'kn',release_date:'2022-04-14',vote_average:8.2,overview:'Rocky takes control of the Kolar Gold Fields and faces threats from powerful enemies across the nation.',poster_path:null},
-  {id:3,title:'12th Fail',original_language:'hi',release_date:'2023-10-27',vote_average:8.9,overview:'The inspiring true story of IPS Officer Manoj Kumar Sharma who cleared UPSC against all odds from a small village.',poster_path:null},
-  {id:4,title:'Jawan',original_language:'hi',release_date:'2023-09-07',vote_average:7.9,overview:'A man driven by a personal vendetta takes on the system to rectify wrongs in society.',poster_path:null},
-  {id:5,title:'RRR',original_language:'te',release_date:'2022-03-25',vote_average:7.8,overview:'A tale of two legendary revolutionaries — Alluri Seetharama Raju and Komaram Bheem — and their friendship.',poster_path:null},
-  {id:6,title:'Ponniyin Selvan',original_language:'ta',release_date:'2022-09-30',vote_average:8.1,overview:'An epic historical drama set in the Chola dynasty, based on Kalki Krishnamurthy\'s beloved Tamil novel.',poster_path:null},
-  {id:7,title:'Leo',original_language:'ta',release_date:'2023-10-19',vote_average:7.6,overview:'A mild-mannered restaurant owner is forced to confront his violent and mysterious past.',poster_path:null},
-  {id:8,title:'Vikram',original_language:'ta',release_date:'2022-06-03',vote_average:7.5,overview:'A black ops agent investigates a series of murders involving masked men and uncovers a dangerous conspiracy.',poster_path:null},
+  {id:1,title:'Pushpa 2: The Rule',original_language:'te',release_date:'2024-12-05',vote_average:8.4,overview:'Pushpa Raj expands his red sandalwood smuggling empire while battling powerful forces determined to bring him down.',poster_url:'https://upload.wikimedia.org/wikipedia/en/6/6e/Pushpa2TheRuleFilmPoster.jpg'},
+  {id:2,title:'KGF Chapter 2',original_language:'kn',release_date:'2022-04-14',vote_average:8.2,overview:'Rocky takes control of the Kolar Gold Fields and faces threats from powerful enemies across the nation.',poster_url:'https://upload.wikimedia.org/wikipedia/en/b/ba/KGF_Chapter_2_film_poster.jpg'},
+  {id:3,title:'12th Fail',original_language:'hi',release_date:'2023-10-27',vote_average:8.9,overview:'The inspiring true story of IPS Officer Manoj Kumar Sharma who cleared UPSC against all odds from a small village.',poster_url:'https://upload.wikimedia.org/wikipedia/en/5/57/12th_Fail_film_poster.jpg'},
+  {id:4,title:'Jawan',original_language:'hi',release_date:'2023-09-07',vote_average:7.9,overview:'A man driven by a personal vendetta takes on the system to rectify wrongs in society.',poster_url:'https://upload.wikimedia.org/wikipedia/en/5/5c/Jawan_film_poster.jpg'},
+  {id:5,title:'RRR',original_language:'te',release_date:'2022-03-25',vote_average:7.8,overview:'A tale of two legendary revolutionaries — Alluri Seetharama Raju and Komaram Bheem — and their friendship.',poster_url:'https://upload.wikimedia.org/wikipedia/en/d/d7/RRR_Movie_Poster.jpg'},
+  {id:6,title:'Ponniyin Selvan',original_language:'ta',release_date:'2022-09-30',vote_average:8.1,overview:'An epic historical drama set in the Chola dynasty, based on Kalki Krishnamurthy\'s beloved Tamil novel.',poster_url:'https://upload.wikimedia.org/wikipedia/en/e/e8/Ponniyin_Selvan_Part_1_film_poster.jpg'},
+  {id:7,title:'Leo',original_language:'ta',release_date:'2023-10-19',vote_average:7.6,overview:'A mild-mannered restaurant owner is forced to confront his violent and mysterious past.',poster_url:'https://upload.wikimedia.org/wikipedia/en/9/9c/Leo_2023_film_poster.jpg'},
+  {id:8,title:'Vikram',original_language:'ta',release_date:'2022-06-03',vote_average:7.5,overview:'A black ops agent investigates a series of murders involving masked men and uncovers a dangerous conspiracy.',poster_url:'https://upload.wikimedia.org/wikipedia/en/0/0e/Vikram_film_poster.jpg'},
 ];
 
 const SEED_REVIEWS={
@@ -382,12 +382,14 @@ async function loadMovies(){
 
 function renderDemo(){movies=DEMO;renderMovies(DEMO);renderTrending(DEMO.slice(0,5));}
 
+function getPoster(m){return m.poster_url||(m.poster_path?POSTER+m.poster_path:null);}
+
 function renderMovies(list){
   const g=document.getElementById('moviesGrid');
   if(!list.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:0.875rem;">No movies found.</div>`;return;}
   g.innerHTML=list.slice(0,16).map(m=>`
     <div class="movie-card" onclick="openMovie(${m.id})">
-      ${m.poster_path?`<img class="movie-poster" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy" onerror="this.outerHTML='<div class=poster-ph>🎬</div>'">`:`<div class="poster-ph">🎬</div>`}
+      ${getPoster(m)?`<img class="movie-poster" src="${getPoster(m)}" alt="${m.title}" loading="lazy" onerror="this.outerHTML='<div class=poster-ph>🎬</div>'">`:`<div class="poster-ph">🎬</div>`}
       <div class="movie-info">
         <div class="movie-title">${m.title||m.original_title}</div>
         <div class="movie-sub">${LANGS[m.original_language]||m.original_language||'—'} · ${(m.release_date||'').slice(0,4)||'—'}</div>
@@ -400,7 +402,7 @@ function renderTrending(list){
   document.getElementById('trendingList').innerHTML=list.map((m,i)=>`
     <div class="trend-item" onclick="openMovie(${m.id})">
       <div class="trend-rank ${i<2?'top':''}">${i+1}</div>
-      ${m.poster_path?`<img class="trend-img" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy"/>`:`<div class="trend-img" style="display:flex;align-items:center;justify-content:center;">🎬</div>`}
+      ${getPoster(m)?`<img class="trend-img" src="${getPoster(m)}" alt="${m.title}" loading="lazy"/>`:`<div class="trend-img" style="display:flex;align-items:center;justify-content:center;">🎬</div>`}
       <div class="trend-info">
         <div class="trend-title">${m.title||m.original_title}</div>
         <div class="trend-sub">${LANGS[m.original_language]||'—'} · ${(m.release_date||'').slice(0,4)}</div>
@@ -418,7 +420,8 @@ function openMovie(id){
   document.getElementById('modalOverview').textContent=m.overview||'No description available.';
   const poster=document.getElementById('modalPoster');
   const ph=document.getElementById('modalPh');
-  if(m.poster_path){poster.src=POSTER+m.poster_path;poster.style.display='block';ph.style.display='none';}
+  const pUrl=getPoster(m);
+  if(pUrl){poster.src=pUrl;poster.style.display='block';ph.style.display='none';}
   else{poster.style.display='none';ph.style.display='flex';}
   const base=m.vote_average||8;
   const imdb=(base*0.98).toFixed(1);
