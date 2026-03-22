@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us — CritiQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#7EC8E3;--blue-light:#EAF6FB;--blue-mid:#B8E3F2;--blue-dark:#3A9FC0;--white:#FFFFFF;--text:#1A2B38;--text-muted:#5A7A8A;--border:#D6EEF8;--bg:#F5FBFE;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text);letter-spacing:-1px;text-decoration:none;}
+.logo span{color:var(--blue-dark);}
+.back-btn{background:none;border:1.5px solid var(--border);color:var(--text-muted);padding:7px 16px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:all 0.2s;}
+.back-btn:hover{border-color:var(--blue-dark);color:var(--blue-dark);}
+
+/* HERO */
+.about-hero{background:var(--text);padding:80px 5%;text-align:center;}
+.about-hero h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--white);margin-bottom:1rem;line-height:1.2;}
+.about-hero h1 span{color:var(--blue);}
+.about-hero p{color:var(--blue-mid);font-size:1.05rem;max-width:600px;margin:0 auto;line-height:1.8;}
+
+/* LOGO SECTION */
+.logo-section{background:var(--white);border-bottom:1px solid var(--border);padding:48px 5%;text-align:center;}
+.logo-display{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1rem;}
+.logo-icon{width:64px;height:64px;background:var(--blue-dark);border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;}
+.logo-icon-c{font-family:'Georgia',serif;font-size:36px;font-weight:700;color:white;}
+.logo-icon-q{position:absolute;top:6px;right:6px;width:20px;height:20px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Georgia',serif;font-size:11px;font-weight:700;color:var(--text);}
+.logo-text-big{font-family:'Georgia',serif;font-size:48px;font-weight:700;color:var(--text);letter-spacing:-1px;}
+.logo-text-big span{color:var(--blue-dark);}
+.logo-tagline{font-size:0.82rem;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase;margin-top:8px;}
+
+/* MISSION */
+.mission{padding:64px 5%;max-width:860px;margin:0 auto;text-align:center;}
+.mission-badge{display:inline-block;background:var(--blue-light);border:1px solid var(--blue-mid);color:var(--blue-dark);font-size:0.75rem;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1.5rem;}
+.mission h2{font-family:'Sora',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--text);margin-bottom:1.25rem;line-height:1.3;}
+.mission p{font-size:1rem;color:var(--text-muted);line-height:1.9;margin-bottom:1rem;}
+.mission .highlight{font-size:1.15rem;font-weight:600;color:var(--blue-dark);font-family:'Sora',sans-serif;line-height:1.6;border-left:3px solid var(--blue-dark);padding-left:20px;text-align:left;margin:2rem 0;}
+
+/* VALUES */
+.values{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 5%;}
+.values-inner{max-width:900px;margin:0 auto;}
+.section-label{font-size:0.75rem;font-weight:700;color:var(--blue-dark);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;text-align:center;}
+.values h2{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;text-align:center;margin-bottom:3rem;color:var(--text);}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;}
+.value-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px;}
+.value-icon{font-size:2rem;margin-bottom:12px;}
+.value-title{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px;}
+.value-text{font-size:0.85rem;color:var(--text-muted);line-height:1.75;}
+
+/* STORY */
+.story{padding:64px 5%;max-width:860px;margin:0 auto;}
+.story h2{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);margin-bottom:2rem;}
+.story p{font-size:0.95rem;color:var(--text-muted);line-height:1.9;margin-bottom:1.25rem;}
+.story strong{color:var(--text);font-weight:600;}
+
+/* STATS */
+.stats{background:var(--text);padding:56px 5%;}
+.stats-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2rem;text-align:center;}
+.stat-num{font-family:'Sora',sans-serif;font-size:2.2rem;font-weight:700;color:var(--blue);margin-bottom:6px;}
+.stat-label{font-size:0.82rem;color:var(--blue-mid);font-weight:500;}
+
+/* PROMISE */
+.promise{padding:64px 5%;background:var(--blue-dark);text-align:center;}
+.promise h2{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;color:white;margin-bottom:1rem;}
+.promise p{color:rgba(255,255,255,0.8);font-size:0.95rem;max-width:560px;margin:0 auto 2rem;line-height:1.8;}
+.promise-btn{background:white;color:var(--blue-dark);border:none;padding:13px 32px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block;transition:all 0.2s;}
+.promise-btn:hover{background:var(--blue-light);}
+
+/* FOOTER */
+footer{background:var(--white);border-top:1px solid var(--border);padding:24px 5%;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--text-muted);flex-wrap:wrap;gap:1rem;}
+
+@media(max-width:600px){.logo-text-big{font-size:36px;}.about-hero{padding:56px 5%;}.values-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Criti<span>Q</span></a>
+  <a class="back-btn" href="index.html">← Back to Home</a>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <h1>We believe every voice<br/>deserves to be <span>heard</span></h1>
+  <p>CritiQ was built for every Indian who has ever wanted honest answers before watching a movie, visiting a shop, or buying a product — all in one place, in their own language.</p>
+</section>
+
+<!-- LOGO -->
+<section class="logo-section">
+  <div class="logo-display">
+    <div class="logo-icon">
+      <span class="logo-icon-c">C</span>
+      <span class="logo-icon-q">Q</span>
+    </div>
+    <div class="logo-text-big">Criti<span>Q</span></div>
+  </div>
+  <div class="logo-tagline">Every Review. One Place.</div>
+</section>
+
+<!-- MISSION -->
+<section class="mission">
+  <div class="mission-badge">Our Mission</div>
+  <h2>Making the right choice should never be hard</h2>
+  <div class="highlight">
+    "We are India's first platform that brings together all reviews — from the biggest sources in the world and from real people like you — so you never have to search five different apps again."
+  </div>
+  <p>Every day, millions of Indians open Google, IMDb, Amazon, Zomato, and five other apps just to make one decision. Is this movie worth watching? Is this shop trustworthy? Should I buy this product?</p>
+  <p>That information exists everywhere — but it is scattered. CritiQ consolidates it all in one clean, simple platform. And on top of that, we let real people — people like you — add their own genuine opinions.</p>
+  <p>Because at the end of the day, the most trusted review is the one from someone who has actually been there.</p>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="values-inner">
+    <div class="section-label">What we stand for</div>
+    <h2>Built on values that matter</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🇮🇳</div>
+        <div class="value-title">India First</div>
+        <div class="value-text">We are built for India — supporting all Indian languages, regional cinema, local businesses, and the 700 million people who deserve a platform that truly understands them.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💬</div>
+        <div class="value-title">Genuine reviews only</div>
+        <div class="value-text">We fight fake reviews. Every opinion on CritiQ comes from a real person with a real experience. Authentic voices are the foundation of everything we build.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔍</div>
+        <div class="value-title">Clarity over confusion</div>
+        <div class="value-text">We bring reviews from multiple sources and show you one unified, clear score. No more switching between apps. No more confusion. Just simple, honest answers.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">❤️</div>
+        <div class="value-title">You are special to us</div>
+        <div class="value-text">Every person who uses CritiQ matters deeply to us. We are not just building an app — we are building a community where your voice shapes what others choose.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🌐</div>
+        <div class="value-title">Your language, your choice</div>
+        <div class="value-text">Tamil, Hindi, Telugu, Malayalam, Kannada — CritiQ works in your language. Because the best review is always the one you can read and write in your mother tongue.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🚀</div>
+        <div class="value-title">Always improving</div>
+        <div class="value-text">We obsess over every small detail. Every review, every button, every line of text — we keep improving because you deserve the best experience possible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story">
+  <h2>Our story</h2>
+  <p>CritiQ started with a simple frustration. Every time someone wanted to watch a movie, they would open IMDb, then Google, then ask friends on WhatsApp — and still feel unsure. Every time someone wanted to visit a new shop, they would search on Google Maps, then look for more opinions elsewhere.</p>
+  <p><strong>The information was out there. It was just scattered.</strong></p>
+  <p>We asked ourselves — what if one platform could bring it all together? What if you could see the IMDb score, the Google rating, and what real people in your city are saying — all on one screen, in your own language?</p>
+  <p>That is why CritiQ was born. Not just as a review app — but as a <strong>decision-making companion</strong> for every Indian. Whether you are in Mumbai or Madurai, Delhi or Dhanbad — CritiQ is here to help you choose confidently.</p>
+  <p>We are just getting started. Movies are live today. Restaurants, shops, products, and much more are coming soon. And every step of the way, <strong>your genuine reviews will be at the heart of it all.</strong></p>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">50,000+</div>
+      <div class="stat-label">Movies & shows indexed</div>
+    </div>
+    <div>
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Indian languages supported</div>
+    </div>
+    <div>
+      <div class="stat-num">3</div>
+      <div class="stat-label">Sources unified per review</div>
+    </div>
+    <div>
+      <div class="stat-num">1</div>
+      <div class="stat-label">Platform for everything</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE -->
+<section class="promise">
+  <h2>Our promise to you</h2>
+  <p>CritiQ will always put you first. Your reviews matter. Your language matters. Your time matters. We will never compromise on honesty, simplicity, or the genuine voices of real people across India.</p>
+  <a class="promise-btn" href="index.html">Start Exploring CritiQ →</a>
+</section>
+
+<footer>
+  <a class="logo" href="index.html" style="font-size:1.1rem;text-decoration:none;">Criti<span style="color:#3A9FC0;">Q</span></a>
+  <div style="display:flex;gap:1.5rem;"><a href="index.html" style="color:#5A7A8A;text-decoration:none;font-size:0.78rem;">Home</a><a href="contact.html" style="color:#5A7A8A;text-decoration:none;font-size:0.78rem;">Contact</a></div><span>© 2026 CritiQ · Built with ❤️ for India</span>
+  <span>You are special for us 🇮🇳</span>
+</footer>
+
+</body>
+</html>
