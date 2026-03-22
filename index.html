@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CritiQ — Every Review, One Place</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --blue:#7EC8E3;
+  --blue-light:#EAF6FB;
+  --blue-mid:#B8E3F2;
+  --blue-dark:#3A9FC0;
+  --white:#FFFFFF;
+  --text:#1A2B38;
+  --text-muted:#5A7A8A;
+  --border:#D6EEF8;
+  --bg:#F5FBFE;
+  --star:#F59E0B;
+}
+
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+nav{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:0 5%;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+
+.logo{
+  font-family:'Sora',sans-serif;
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--text);
+  letter-spacing:-1px;
+}
+.logo span{color:var(--blue-dark);}
+
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+
+.nav-right{display:flex;gap:0.6rem;align-items:center;}
+
+.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text-muted);padding:7px 16px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--blue-dark);color:var(--blue-dark);}
+
+.btn-main{background:var(--blue-dark);color:var(--white);border:none;padding:8px 18px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.2s;}
+.btn-main:hover{background:#2D86A3;}
+
+/* HERO */
+.hero{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:60px 5% 50px;
+  text-align:center;
+}
+
+.hero h1{
+  font-family:'Sora',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:700;
+  color:var(--text);
+  line-height:1.25;
+  margin-bottom:0.75rem;
+}
+
+.hero h1 em{font-style:normal;color:var(--blue-dark);}
+
+.hero p{
+  color:var(--text-muted);
+  font-size:1rem;
+  max-width:480px;
+  margin:0 auto 2rem;
+  line-height:1.7;
+}
+
+/* SEARCH */
+.search-wrap{max-width:560px;margin:0 auto;}
+.search-box{
+  display:flex;
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  transition:border-color 0.2s;
+}
+.search-box:focus-within{border-color:var(--blue-dark);}
+.search-box input{
+  flex:1;border:none;outline:none;
+  padding:14px 16px;
+  font-size:0.95rem;
+  font-family:'Inter',sans-serif;
+  color:var(--text);
+  background:transparent;
+}
+.search-box input::placeholder{color:#9BB8C8;}
+.search-box select{
+  border:none;border-left:1.5px solid var(--border);
+  outline:none;padding:0 14px;
+  font-size:0.8rem;font-family:'Inter',sans-serif;
+  color:var(--text-muted);background:var(--white);
+  cursor:pointer;font-weight:600;
+}
+.search-btn{
+  background:var(--blue-dark);border:none;color:white;
+  padding:0 20px;cursor:pointer;font-size:0.875rem;
+  font-weight:600;font-family:'Inter',sans-serif;
+  display:flex;align-items:center;gap:6px;
+  transition:background 0.2s;
+}
+.search-btn:hover{background:#2D86A3;}
+
+.pills{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;}
+.pill{
+  background:var(--blue-light);border:1px solid var(--blue-mid);
+  color:var(--blue-dark);font-size:0.75rem;font-weight:600;
+  padding:4px 12px;border-radius:20px;cursor:pointer;
+  transition:all 0.2s;
+}
+.pill:hover{background:var(--blue-mid);}
+
+/* API KEY BANNER */
+.api-banner{
+  background:var(--blue-light);
+  border:1.5px solid var(--blue-mid);
+  border-radius:12px;
+  padding:20px 24px;
+  margin:32px 5%;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.api-banner p{color:var(--text-muted);font-size:0.875rem;line-height:1.6;flex:1;}
+.api-banner strong{color:var(--text);}
+.api-input{
+  border:1.5px solid var(--border);border-radius:8px;
+  padding:8px 12px;font-size:0.875rem;
+  font-family:'Inter',sans-serif;color:var(--text);
+  background:var(--white);width:240px;outline:none;
+  transition:border-color 0.2s;
+}
+.api-input:focus{border-color:var(--blue-dark);}
+.api-btn{
+  background:var(--blue-dark);color:white;border:none;
+  padding:9px 18px;border-radius:8px;font-size:0.875rem;
+  font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+  white-space:nowrap;
+}
+
+/* SECTION */
+.section{padding:40px 5%;}
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.sec-title{font-family:'Sora',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);}
+.see-all{font-size:0.8rem;color:var(--blue-dark);font-weight:600;cursor:pointer;text-decoration:none;}
+
+/* LANG PILLS */
+.lang-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.lang-btn{
+  padding:5px 14px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--white);
+  color:var(--text-muted);font-size:0.78rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;
+}
+.lang-btn.active,.lang-btn:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:white;}
+
+/* MOVIE GRID */
+.movies-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:1rem;
+}
+
+.movie-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.movie-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(62,159,192,0.12);}
+
+.movie-poster{
+  width:100%;aspect-ratio:2/3;
+  object-fit:cover;display:block;
+  background:linear-gradient(135deg,var(--blue-light),var(--blue-mid));
+}
+
+.poster-ph{
+  width:100%;aspect-ratio:2/3;
+  background:linear-gradient(135deg,#B8E3F2,#7EC8E3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;color:white;
+}
+
+.movie-info{padding:10px 10px 12px;}
+.movie-title{
+  font-family:'Sora',sans-serif;font-size:0.8rem;
+  font-weight:600;color:var(--text);margin-bottom:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.movie-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;}
+.movie-rating{
+  display:flex;align-items:center;gap:4px;
+  font-size:0.75rem;font-weight:600;color:var(--text);
+}
+.movie-rating span{color:var(--star);}
+
+/* CATEGORIES */
+.cats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:1rem;
+}
+.cat-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;padding:24px 16px;text-align:center;
+  cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;
+}
+.cat-card:hover{border-color:var(--blue-dark);box-shadow:0 4px 16px rgba(62,159,192,0.1);}
+.cat-card.live{border-color:var(--blue-dark);background:var(--blue-light);}
+.cat-icon{font-size:2rem;margin-bottom:10px;}
+.cat-name{font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:3px;}
+.cat-sub{font-size:0.72rem;color:var(--text-muted);}
+.cs-overlay{
+  position:absolute;inset:0;
+  background:rgba(255,255,255,0.88);
+  display:flex;align-items:center;justify-content:center;
+  border-radius:12px;
+}
+.cs-tag{
+  background:var(--text);color:var(--blue-mid);
+  font-size:0.65rem;font-weight:700;padding:4px 10px;
+  border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;
+}
+
+/* SKELETON */
+.skeleton{
+  background:linear-gradient(90deg,#E8F4F8 25%,#D6EEF8 50%,#E8F4F8 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:8px;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* TRENDING SIDEBAR LAYOUT */
+.main-layout{display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:start;}
+@media(max-width:860px){
+  .main-layout{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .movies-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:480px){
+  .movies-grid{grid-template-columns:repeat(2,1fr);}
+  .cats-grid{grid-template-columns:repeat(2,1fr);}
+  .api-banner{flex-direction:column;align-items:flex-start;}
+}
+
+/* SIDEBAR */
+.sidebar-box{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;padding:20px;
+}
+.sidebar-title{font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:1rem;color:var(--text);}
+
+.trend-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;
+  transition:background 0.15s;
+}
+.trend-item:last-child{border-bottom:none;}
+.trend-rank{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--blue-mid);min-width:24px;}
+.trend-rank.top{color:var(--blue-dark);}
+.trend-img{width:40px;height:56px;border-radius:6px;object-fit:cover;background:var(--blue-light);flex-shrink:0;}
+.trend-info{flex:1;overflow:hidden;}
+.trend-title{font-size:0.8rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.trend-sub{font-size:0.7rem;color:var(--text-muted);margin-top:2px;}
+.trend-score{font-family:'Sora',sans-serif;font-size:0.8rem;font-weight:700;color:var(--blue-dark);display:flex;align-items:center;gap:2px;}
+
+/* UNIFIED SCORE */
+.score-box{
+  background:var(--text);border-radius:12px;
+  padding:20px;color:white;margin-bottom:1rem;
+}
+.score-label{font-size:0.7rem;color:#8AAFC8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.score-num{font-family:'Sora',sans-serif;font-size:2.8rem;font-weight:700;color:var(--blue-mid);line-height:1;}
+.score-sub{font-size:0.72rem;color:#5A7A8A;margin-top:4px;margin-bottom:16px;}
+.score-row{display:flex;align-items:center;gap:8px;font-size:0.75rem;margin-bottom:8px;}
+.score-src{color:#8AAFC8;min-width:80px;}
+.score-bg{flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;}
+.score-fill{height:100%;background:var(--blue);border-radius:3px;}
+.score-val{color:white;font-weight:600;min-width:28px;text-align:right;}
+
+/* WRITE REVIEW CTA */
+.cta{
+  background:var(--blue-dark);
+  border-radius:14px;
+  padding:36px 32px;
+  text-align:center;
+  margin:0 5% 40px;
+}
+.cta h2{font-family:'Sora',sans-serif;color:white;font-size:1.3rem;margin-bottom:0.5rem;}
+.cta p{color:rgba(255,255,255,0.75);font-size:0.875rem;margin-bottom:1.25rem;line-height:1.6;}
+.cta button{
+  background:white;color:var(--blue-dark);border:none;
+  padding:11px 28px;border-radius:8px;font-size:0.875rem;
+  font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all 0.2s;
+}
+.cta button:hover{background:var(--blue-light);}
+
+/* FOOTER */
+footer{
+  background:var(--white);
+  border-top:1px solid var(--border);
+  padding:32px 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.78rem;color:var(--text-muted);
+  flex-wrap:wrap;gap:1rem;
+}
+footer .logo{font-size:1.1rem;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">Criti<span>Q</span></span>
+  <ul class="nav-links">
+    <li><a href="#">Movies</a></li>
+    <li><a href="#">Web Series</a></li>
+    <li><a href="#">OTT</a></li>
+    <li><a href="#">Write Review</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-main">Sign up free</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Every Review.<br/><em>One Place.</em></h1>
+  <p>Real ratings from IMDb, Google & Rotten Tomatoes — plus genuine reviews from people across India, in your language.</p>
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search movies, shows, OTT content..."/>
+      <select id="catSelect">
+        <option>🎬 Movies</option>
+        <option>📺 Web Series</option>
+        <option>🎵 Music</option>
+      </select>
+      <button class="search-btn" onclick="doSearch()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
+      </button>
+    </div>
+    <div class="pills">
+      <span class="pill" onclick="qSearch('Pushpa 2')">Pushpa 2</span>
+      <span class="pill" onclick="qSearch('KGF 2')">KGF 2</span>
+      <span class="pill" onclick="qSearch('RRR')">RRR</span>
+      <span class="pill" onclick="qSearch('Jawan')">Jawan</span>
+      <span class="pill" onclick="qSearch('Leo')">Leo</span>
+    </div>
+  </div>
+</section>
+
+<!-- API KEY BANNER -->
+<div class="api-banner" id="apiBanner">
+  <p>
+    <strong>Connect to live movie data!</strong><br/>
+    Get a free TMDB API key at <strong>themoviedb.org</strong> (takes 2 mins) and paste it below to load real posters and live ratings automatically.
+  </p>
+  <input class="api-input" id="apiKeyInput" placeholder="Paste your TMDB API key here..." type="text"/>
+  <button class="api-btn" onclick="saveKey()">Load Live Data →</button>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section" style="background:var(--white);border-bottom:1px solid var(--border);">
+  <div class="sec-header">
+    <div class="sec-title">Explore Categories</div>
+  </div>
+  <div class="cats-grid">
+    <div class="cat-card live">
+      <div class="cat-icon">🎬</div>
+      <div class="cat-name">Movies</div>
+      <div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div>
+    </div>
+    <div class="cat-card" style="position:relative;">
+      <div class="cat-icon">📺</div>
+      <div class="cat-name">Web Series</div>
+      <div class="cat-sub">OTT Originals</div>
+      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
+    </div>
+    <div class="cat-card" style="position:relative;">
+      <div class="cat-icon">🛍️</div>
+      <div class="cat-name">Shops & Malls</div>
+      <div class="cat-sub">Local businesses</div>
+      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
+    </div>
+    <div class="cat-card" style="position:relative;">
+      <div class="cat-icon">📦</div>
+      <div class="cat-name">Products</div>
+      <div class="cat-sub">Electronics & more</div>
+      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
+    </div>
+    <div class="cat-card" style="position:relative;">
+      <div class="cat-icon">🍽️</div>
+      <div class="cat-name">Restaurants</div>
+      <div class="cat-sub">Food & dining</div>
+      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
+    </div>
+    <div class="cat-card" style="position:relative;">
+      <div class="cat-icon">🎵</div>
+      <div class="cat-name">Music</div>
+      <div class="cat-sub">Songs & albums</div>
+      <div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<section class="section">
+  <div class="main-layout">
+    <div>
+      <!-- TRENDING MOVIES -->
+      <div class="sec-header">
+        <div class="sec-title">Trending Indian Movies</div>
+        <a class="see-all">See all →</a>
+      </div>
+
+      <div class="lang-bar">
+        <button class="lang-btn active" onclick="filterLang(this,'all')">All</button>
+        <button class="lang-btn" onclick="filterLang(this,'hi')">Hindi</button>
+        <button class="lang-btn" onclick="filterLang(this,'ta')">Tamil</button>
+        <button class="lang-btn" onclick="filterLang(this,'te')">Telugu</button>
+        <button class="lang-btn" onclick="filterLang(this,'ml')">Malayalam</button>
+        <button class="lang-btn" onclick="filterLang(this,'kn')">Kannada</button>
+      </div>
+
+      <div class="movies-grid" id="moviesGrid">
+        <!-- skeleton cards while loading -->
+        ${Array(8).fill(`
+          <div class="movie-card">
+            <div class="skeleton" style="aspect-ratio:2/3;width:100%;"></div>
+            <div style="padding:10px;">
+              <div class="skeleton" style="height:12px;margin-bottom:6px;border-radius:4px;"></div>
+              <div class="skeleton" style="height:10px;width:60%;border-radius:4px;"></div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="score-box">
+        <div class="score-label">Unified Score — Pushpa 2</div>
+        <div class="score-num">8.4</div>
+        <div class="score-sub">Avg. across IMDb, Google & Community · 2.1M reviews</div>
+        <div class="score-row">
+          <span class="score-src">IMDb</span>
+          <div class="score-bg"><div class="score-fill" style="width:82%"></div></div>
+          <span class="score-val">8.2</span>
+        </div>
+        <div class="score-row">
+          <span class="score-src">Google</span>
+          <div class="score-bg"><div class="score-fill" style="width:90%"></div></div>
+          <span class="score-val">9.0</span>
+        </div>
+        <div class="score-row">
+          <span class="score-src">Community</span>
+          <div class="score-bg"><div class="score-fill" style="width:80%"></div></div>
+          <span class="score-val">8.0</span>
+        </div>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-title">Top Rated This Week</div>
+        <div id="trendingList">
+          ${[1,2,3,4,5].map(i=>`
+            <div class="trend-item">
+              <div class="trend-rank ${i<=2?'top':''}">${i}</div>
+              <div class="trend-img skeleton"></div>
+              <div class="trend-info">
+                <div class="skeleton" style="height:11px;margin-bottom:5px;border-radius:3px;"></div>
+                <div class="skeleton" style="height:10px;width:70%;border-radius:3px;"></div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Watched something recently?</h2>
+  <p>Share your honest opinion with millions of Indians looking for genuine reviews — in your own language.</p>
+  <button>Write a Review ✍️</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="logo">Criti<span>Q</span></span>
+  <span>Every review, one place. Built for India 🇮🇳</span>
+  <span>© 2025 CritiQ · Customer first, always.</span>
+</footer>
+
+<script>
+const POSTER = 'https://image.tmdb.org/t/p/w500';
+const LANG_MAP = {hi:'Hindi',ta:'Tamil',te:'Telugu',ml:'Malayalam',kn:'Kannada',bn:'Bengali',mr:'Marathi'};
+let allMovies = [];
+let currentLang = 'all';
+let API_KEY = localStorage.getItem('critiq_tmdb_key') || '';
+
+if(API_KEY) {
+  document.getElementById('apiBanner').style.display = 'none';
+  loadMovies();
+}
+
+function saveKey(){
+  const k = document.getElementById('apiKeyInput').value.trim();
+  if(!k){alert('Please enter a valid API key');return;}
+  API_KEY = k;
+  localStorage.setItem('critiq_tmdb_key', k);
+  document.getElementById('apiBanner').style.display = 'none';
+  loadMovies();
+}
+
+async function loadMovies(){
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_origin_country=IN&sort_by=popularity.desc&page=1`
+    );
+    if(!res.ok) throw new Error('API error');
+    const data = await res.json();
+    allMovies = data.results.filter(m => m.poster_path);
+    renderMovies(allMovies);
+    renderTrending(allMovies.slice(0,5));
+  } catch(e) {
+    // if API fails, show demo data
+    renderDemo();
+  }
+}
+
+function renderMovies(list){
+  const grid = document.getElementById('moviesGrid');
+  if(!list.length){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:0.875rem;">No movies found for this language yet.</div>`;
+    return;
+  }
+  grid.innerHTML = list.slice(0,16).map(m => `
+    <div class="movie-card" onclick="alert('Movie detail page coming soon!')">
+      <img class="movie-poster" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy" onerror="this.parentElement.querySelector('.poster-ph')&&(this.style.display='none')"/>
+      <div class="movie-info">
+        <div class="movie-title">${m.title||m.original_title}</div>
+        <div class="movie-sub">${LANG_MAP[m.original_language]||m.original_language} · ${(m.release_date||'').slice(0,4)||'—'}</div>
+        <div class="movie-rating"><span>★</span> ${m.vote_average?m.vote_average.toFixed(1):'—'}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTrending(list){
+  document.getElementById('trendingList').innerHTML = list.map((m,i) => `
+    <div class="trend-item">
+      <div class="trend-rank ${i<2?'top':''}">${i+1}</div>
+      <img class="trend-img" src="${POSTER}${m.poster_path}" alt="${m.title}" loading="lazy"/>
+      <div class="trend-info">
+        <div class="trend-title">${m.title||m.original_title}</div>
+        <div class="trend-sub">${LANG_MAP[m.original_language]||m.original_language} · ${(m.release_date||'').slice(0,4)}</div>
+      </div>
+      <div class="trend-score"><span style="color:var(--star)">★</span> ${m.vote_average?m.vote_average.toFixed(1):'—'}</div>
+    </div>
+  `).join('');
+}
+
+function renderDemo(){
+  // fallback static demo when no API key
+  const demo = [
+    {title:'Pushpa 2: The Rule',lang:'Telugu',year:2024,rating:8.4},
+    {title:'KGF Chapter 2',lang:'Kannada',year:2022,rating:8.2},
+    {title:'12th Fail',lang:'Hindi',year:2023,rating:8.9},
+    {title:'Jawan',lang:'Hindi',year:2023,rating:7.9},
+    {title:'RRR',lang:'Telugu',year:2022,rating:7.8},
+    {title:'Ponniyin Selvan',lang:'Tamil',year:2022,rating:8.1},
+    {title:'Leo',lang:'Tamil',year:2023,rating:7.6},
+    {title:'Vikram',lang:'Tamil',year:2022,rating:7.5},
+  ];
+  const grid = document.getElementById('moviesGrid');
+  grid.innerHTML = demo.map(m=>`
+    <div class="movie-card">
+      <div class="poster-ph">🎬</div>
+      <div class="movie-info">
+        <div class="movie-title">${m.title}</div>
+        <div class="movie-sub">${m.lang} · ${m.year}</div>
+        <div class="movie-rating"><span>★</span> ${m.rating}</div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('trendingList').innerHTML = demo.slice(0,5).map((m,i)=>`
+    <div class="trend-item">
+      <div class="trend-rank ${i<2?'top':''}">${i+1}</div>
+      <div class="trend-img" style="background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🎬</div>
+      <div class="trend-info">
+        <div class="trend-title">${m.title}</div>
+        <div class="trend-sub">${m.lang} · ${m.year}</div>
+      </div>
+      <div class="trend-score"><span style="color:var(--star)">★</span> ${m.rating}</div>
+    </div>
+  `).join('');
+}
+
+async function filterLang(btn, lang){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentLang = lang;
+  if(!API_KEY){renderDemo();return;}
+  try {
+    const url = lang === 'all'
+      ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_origin_country=IN&sort_by=popularity.desc`
+      : `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=${lang}&with_origin_country=IN&sort_by=popularity.desc`;
+    const res = await fetch(url);
+    const data = await res.json();
+    allMovies = data.results.filter(m=>m.poster_path);
+    renderMovies(allMovies);
+  } catch(e){renderDemo();}
+}
+
+function doSearch(){
+  const q = document.getElementById('searchInput').value.trim();
+  if(!q) return;
+  if(!API_KEY){alert('Enter your TMDB API key first to search!');return;}
+  searchMovies(q);
+}
+
+async function searchMovies(q){
+  try {
+    const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    renderMovies(data.results.filter(m=>m.poster_path));
+  } catch(e){alert('Search failed. Check your API key.');}
+}
+
+function qSearch(term){
+  document.getElementById('searchInput').value = term;
+  doSearch();
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if(e.key==='Enter') doSearch();
+});
+
+// Load demo on start if no API key
+if(!API_KEY) renderDemo();
+</script>
+</body>
+</html>
