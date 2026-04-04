@@ -303,6 +303,44 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5
 
 @media(max-width:860px){.main-layout{grid-template-columns:1fr;}.nav-links{display:none;}.hamburger{display:flex;}.movies-grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:520px){.movies-grid{grid-template-columns:repeat(2,1fr);}.cats-grid{grid-template-columns:repeat(3,1fr);}.modal-hero{flex-direction:column;}.modal-poster{width:100%;height:200px;object-fit:cover;}.footer-links{gap:1rem;}}
+
+/* PLACES SECTION */
+.places-section{display:none;}
+.places-section.active{display:block;}
+.places-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.places-search-box{display:flex;flex:1;min-width:200px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.places-search-box input{flex:1;border:none;outline:none;padding:11px 14px;font-size:0.875rem;font-family:"Inter",sans-serif;color:var(--text);background:transparent;}
+.places-search-btn{background:var(--blue-dark);border:none;color:white;padding:0 16px;cursor:pointer;font-size:0.8rem;font-weight:600;font-family:"Inter",sans-serif;}
+.city-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.city-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--text-muted);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:"Inter",sans-serif;}
+.city-btn.active,.city-btn:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:white;}
+.places-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
+.place-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+.place-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(62,159,192,0.14);}
+.place-img{width:100%;height:160px;object-fit:cover;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.place-info{padding:14px;}
+.place-name{font-family:"Sora",sans-serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.place-address{font-size:0.72rem;color:var(--text-muted);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.place-footer{display:flex;align-items:center;justify-content:space-between;}
+.place-rating{display:flex;align-items:center;gap:4px;font-size:0.78rem;font-weight:600;color:var(--text);}
+.place-rating .s{color:var(--star);}
+.place-type{font-size:0.65rem;font-weight:700;background:var(--blue-light);color:var(--blue-dark);padding:3px 8px;border-radius:6px;text-transform:capitalize;}
+.place-total{font-size:0.68rem;color:var(--text-muted);}
+
+/* PLACE MODAL */
+.place-modal{background:var(--white);border-radius:16px;width:100%;max-width:640px;max-height:88vh;overflow-y:auto;position:relative;}
+.place-modal-img{width:100%;height:200px;object-fit:cover;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem;}
+.place-modal-body{padding:20px 24px;}
+.place-modal-title{font-family:"Sora",sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:4px;}
+.place-modal-meta{font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;}
+.place-detail-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:0.82rem;}
+.place-detail-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.place-detail-text{color:var(--text-muted);line-height:1.5;}
+.open-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.72rem;font-weight:700;margin-bottom:12px;}
+.open-badge.open{background:#DCFCE7;color:#166534;}
+.open-badge.closed{background:#FEE2E2;color:#991B1B;}
+.gmaps-btn{display:inline-flex;align-items:center;gap:6px;background:var(--blue-dark);color:white;border:none;padding:10px 18px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;text-decoration:none;font-family:"Inter",sans-serif;transition:background 0.2s;margin-top:12px;}
+.gmaps-btn:hover{background:#2D86A3;}
 </style>
 </head>
 <body>
@@ -359,11 +397,11 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5
 <section class="section" style="background:var(--white);border-bottom:1px solid var(--border);">
   <div class="sec-header"><div class="sec-title">Explore Categories</div></div>
   <div class="cats-grid">
-    <div class="cat-card live"><div class="cat-icon">🎬</div><div class="cat-name">Movies</div><div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div></div>
+    <div class="cat-card live" onclick="showSection('movies')"><div class="cat-icon">🎬</div><div class="cat-name">Movies</div><div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div></div>
     <div class="cat-card" style="position:relative;"><div class="cat-icon">📺</div><div class="cat-name">Web Series</div><div class="cat-sub">OTT Originals</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
-    <div class="cat-card" style="position:relative;"><div class="cat-icon">🛍️</div><div class="cat-name">Shops & Malls</div><div class="cat-sub">Local businesses</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
+    <div class="cat-card live" onclick="showSection('shops')"><div class="cat-icon">🛍️</div><div class="cat-name">Shops & Malls</div><div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div></div>
     <div class="cat-card" style="position:relative;"><div class="cat-icon">📦</div><div class="cat-name">Products</div><div class="cat-sub">Electronics & more</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
-    <div class="cat-card" style="position:relative;"><div class="cat-icon">🍽️</div><div class="cat-name">Restaurants</div><div class="cat-sub">Food & dining</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
+    <div class="cat-card live" onclick="showSection('restaurants')"><div class="cat-icon">🍽️</div><div class="cat-name">Restaurants</div><div class="cat-sub" style="color:var(--blue-dark);font-weight:600;">Live now</div></div>
     <div class="cat-card" style="position:relative;"><div class="cat-icon">🎵</div><div class="cat-name">Music</div><div class="cat-sub">Songs & albums</div><div class="cs-overlay"><span class="cs-tag">Coming Soon</span></div></div>
   </div>
 </section>
@@ -405,6 +443,59 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5
   </div>
 </section>
 
+
+<!-- RESTAURANTS SECTION -->
+<section class="section places-section" id="restaurantsSection">
+  <div class="sec-header">
+    <div class="sec-title">🍽️ Restaurants Near You</div>
+    <span class="see-all" onclick="showSection('movies')">← Back to Movies</span>
+  </div>
+  <div class="places-header">
+    <div class="places-search-box">
+      <input type="text" id="restSearch" placeholder="Search restaurants by name or cuisine..."/>
+      <button class="places-search-btn" onclick="searchPlaces('restaurant')">Search</button>
+    </div>
+  </div>
+  <div class="city-bar" id="restCityBar">
+    <button class="city-btn active" onclick="loadPlaces('restaurant','Mumbai',this)">Mumbai</button>
+    <button class="city-btn" onclick="loadPlaces('restaurant','Delhi',this)">Delhi</button>
+    <button class="city-btn" onclick="loadPlaces('restaurant','Bangalore',this)">Bangalore</button>
+    <button class="city-btn" onclick="loadPlaces('restaurant','Chennai',this)">Chennai</button>
+    <button class="city-btn" onclick="loadPlaces('restaurant','Hyderabad',this)">Hyderabad</button>
+    <button class="city-btn" onclick="loadPlaces('restaurant','Pune',this)">Pune</button>
+    <button class="city-btn" onclick="loadPlaces('restaurant','Kolkata',this)">Kolkata</button>
+  </div>
+  <div class="places-grid" id="restaurantsGrid">
+    <div class="loading-state"><div class="spinner"></div> Loading restaurants...</div>
+  </div>
+</section>
+
+<!-- SHOPS SECTION -->
+<section class="section places-section" id="shopsSection">
+  <div class="sec-header">
+    <div class="sec-title">🛍️ Shops & Malls Near You</div>
+    <span class="see-all" onclick="showSection('movies')">← Back to Movies</span>
+  </div>
+  <div class="places-header">
+    <div class="places-search-box">
+      <input type="text" id="shopSearch" placeholder="Search shops, malls, stores..."/>
+      <button class="places-search-btn" onclick="searchPlaces('shop')">Search</button>
+    </div>
+  </div>
+  <div class="city-bar" id="shopCityBar">
+    <button class="city-btn active" onclick="loadPlaces('shopping_mall','Mumbai',this)">Mumbai</button>
+    <button class="city-btn" onclick="loadPlaces('shopping_mall','Delhi',this)">Delhi</button>
+    <button class="city-btn" onclick="loadPlaces('shopping_mall','Bangalore',this)">Bangalore</button>
+    <button class="city-btn" onclick="loadPlaces('shopping_mall','Chennai',this)">Chennai</button>
+    <button class="city-btn" onclick="loadPlaces('shopping_mall','Hyderabad',this)">Hyderabad</button>
+    <button class="city-btn" onclick="loadPlaces('shopping_mall','Pune',this)">Pune</button>
+    <button class="city-btn" onclick="loadPlaces('shopping_mall','Kolkata',this)">Kolkata</button>
+  </div>
+  <div class="places-grid" id="shopsGrid">
+    <div class="loading-state"><div class="spinner"></div> Loading shops...</div>
+  </div>
+</section>
+
 <div class="cta">
   <h2>Watched something recently?</h2>
   <p>Share your honest opinion with millions of Indians looking for genuine reviews — in your own language.</p>
@@ -426,6 +517,45 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5
     <span>You are special for us. ❤️</span>
   </div>
 </footer>
+
+
+<!-- PLACE DETAIL MODAL -->
+<div class="overlay" id="placeOverlay" onclick="bgClose(event)">
+  <div class="place-modal">
+    <button class="modal-close" onclick="closeModal('placeOverlay')">✕</button>
+    <div id="placeModalImg"></div>
+    <div class="place-modal-body">
+      <div class="place-modal-title" id="placeModalTitle"></div>
+      <div class="place-modal-meta" id="placeModalMeta"></div>
+      <span class="open-badge" id="placeOpenBadge" style="display:none"></span>
+      <div class="place-detail-row"><span class="place-detail-icon">📍</span><span class="place-detail-text" id="placeModalAddress"></span></div>
+      <div class="place-detail-row"><span class="place-detail-icon">📞</span><span class="place-detail-text" id="placeModalPhone"></span></div>
+      <a class="gmaps-btn" id="placeGmapsBtn" href="#" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Open in Google Maps
+      </a>
+
+      <!-- WRITE REVIEW FOR PLACE -->
+      <div class="write-box" style="margin-top:1.5rem;">
+        <div class="write-title">✍️ Write Your Review for <span id="placeReviewTitle"></span></div>
+        <input type="hidden" id="placeReviewId"/>
+        <div class="star-picker">
+          <span class="star-pick place-star-pick" onclick="pickPlaceStar(1)">★</span>
+          <span class="star-pick place-star-pick" onclick="pickPlaceStar(2)">★</span>
+          <span class="star-pick place-star-pick" onclick="pickPlaceStar(3)">★</span>
+          <span class="star-pick place-star-pick" onclick="pickPlaceStar(4)">★</span>
+          <span class="star-pick place-star-pick" onclick="pickPlaceStar(5)">★</span>
+        </div>
+        <input class="form-input" id="placeReviewName" placeholder="Your name"/>
+        <textarea class="form-input" id="placeReviewText" rows="3" placeholder="Share your honest experience..."></textarea>
+        <button class="submit-btn" onclick="submitPlaceReview()">Submit Review</button>
+      </div>
+
+      <div class="modal-sec" style="margin-top:1.5rem;">Community Reviews</div>
+      <div id="placeReviewsList"></div>
+    </div>
+  </div>
+</div>
 
 <!-- MOVIE MODAL -->
 <div class="overlay" id="movieOverlay" onclick="bgClose(event)">
@@ -912,6 +1042,224 @@ function showToast(msg,type=''){
   if(type)t.classList.add(type);
   setTimeout(()=>{t.className='toast';},3000);
 }
+
+
+// GOOGLE PLACES
+const PLACES_KEY = 'AIzaSyBQqq0lcvXrSqzqL90wYGphWvsLl5GZn28';
+const PLACES_PROXY = 'https://maps.googleapis.com/maps/api/place';
+let currentPlaceType = 'restaurant';
+let currentCity = 'Mumbai';
+
+function showSection(section){
+  // Hide all sections
+  document.getElementById('moviesSection').style.display = section==='movies'?'':'none';
+  document.getElementById('restaurantsSection').classList.toggle('active', section==='restaurants');
+  document.getElementById('shopsSection').classList.toggle('active', section==='shops');
+
+  // Update category cards
+  document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active-section'));
+
+  if(section==='restaurants'){
+    loadPlaces('restaurant','Mumbai', document.querySelector('#restCityBar .city-btn'));
+  } else if(section==='shops'){
+    loadPlaces('shopping_mall','Mumbai', document.querySelector('#shopCityBar .city-btn'));
+  }
+  window.scrollTo({top:300,behavior:'smooth'});
+}
+
+async function loadPlaces(type, city, btn){
+  currentPlaceType = type;
+  currentCity = city;
+  const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '<div class="loading-state"><div class="spinner"></div> Loading...</div>';
+
+  // Update city buttons
+  if(btn){
+    const bar = btn.closest('.city-bar');
+    bar.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  try {
+    const query = type==='restaurant'?'restaurants in '+city:'shopping malls in '+city;
+    const url = `${PLACES_PROXY}/textsearch/json?query=${encodeURIComponent(query)}&key=${PLACES_KEY}`;
+    const r = await fetch(url);
+    const d = await r.json();
+    if(d.results && d.results.length){
+      renderPlaces(d.results, gridId, type);
+    } else {
+      renderDemoPlaces(gridId, type, city);
+    }
+  } catch(e) {
+    renderDemoPlaces(gridId, type, city);
+  }
+}
+
+function renderPlaces(list, gridId, type){
+  const grid = document.getElementById(gridId);
+  if(!list.length){
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><p>No results found.<br/>Try a different city or search term.</p></div>';
+    return;
+  }
+  grid.innerHTML = list.slice(0,12).map(p => {
+    const photo = p.photos&&p.photos[0]
+      ? `${PLACES_PROXY}/photo?maxwidth=400&photoreference=${p.photos[0].photo_reference}&key=${PLACES_KEY}`
+      : null;
+    const emoji = type==='restaurant'?'🍽️':'🛍️';
+    const isOpen = p.opening_hours?.open_now;
+    return `<div class="place-card" onclick="openPlace('${escapeHtml(JSON.stringify(p).replace(/'/g,"&#39;"))}')">
+      ${photo
+        ? `<img class="place-img" src="${photo}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.outerHTML='<div class=place-img>${emoji}</div>'">`
+        : `<div class="place-img">${emoji}</div>`}
+      <div class="place-info">
+        <div class="place-name">${escapeHtml(p.name)}</div>
+        <div class="place-address">${escapeHtml(p.formatted_address||p.vicinity||'')}</div>
+        <div class="place-footer">
+          <div class="place-rating">
+            <span class="s">★</span> ${p.rating?p.rating.toFixed(1):'N/A'}
+            <span class="place-total">(${p.user_ratings_total||0})</span>
+          </div>
+          ${p.types&&p.types[0]?`<span class="place-type">${p.types[0].replace(/_/g,' ')}</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderDemoPlaces(gridId, type, city){
+  const restaurants = [
+    {name:'Tandoor Palace',address:'MG Road, '+city,rating:4.3,total:1250,type:'restaurant',emoji:'🍽️'},
+    {name:'Spice Garden',address:'Linking Road, '+city,rating:4.1,total:890,type:'restaurant',emoji:'🍛'},
+    {name:'The Biryani House',address:'FC Road, '+city,rating:4.5,total:2100,type:'restaurant',emoji:'🍚'},
+    {name:'Pizza Hub',address:'Anna Salai, '+city,rating:4.0,total:760,type:'restaurant',emoji:'🍕'},
+    {name:'South Indian Delights',address:'Brigade Road, '+city,rating:4.4,total:1560,type:'restaurant',emoji:'🥘'},
+    {name:'Chai Sutta Bar',address:'Connaught Place, '+city,rating:4.2,total:980,type:'cafe',emoji:'☕'},
+  ];
+  const shops = [
+    {name:'Phoenix Mall',address:'Nagar Road, '+city,rating:4.4,total:8900,type:'shopping mall',emoji:'🏬'},
+    {name:'Central Mall',address:'MG Road, '+city,rating:4.2,total:5600,type:'shopping mall',emoji:'🛍️'},
+    {name:'Reliance Digital',address:'FC Road, '+city,rating:4.1,total:2300,type:'electronics store',emoji:'📱'},
+    {name:'Big Bazaar',address:'LBS Marg, '+city,rating:4.0,total:4100,type:'supermarket',emoji:'🛒'},
+    {name:'Westside',address:'Linking Road, '+city,rating:4.3,total:1800,type:'clothing store',emoji:'👗'},
+    {name:'D-Mart',address:'SV Road, '+city,rating:4.5,total:6700,type:'supermarket',emoji:'🏪'},
+  ];
+  const data = type==='restaurant'?restaurants:shops;
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = data.map(p=>`
+    <div class="place-card" onclick="openDemoPlace(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+      <div class="place-img">${p.emoji}</div>
+      <div class="place-info">
+        <div class="place-name">${p.name}</div>
+        <div class="place-address">${p.address}</div>
+        <div class="place-footer">
+          <div class="place-rating"><span class="s">★</span> ${p.rating} <span class="place-total">(${p.total})</span></div>
+          <span class="place-type">${p.type}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function openDemoPlace(p){
+  openPlaceModal(p.name, p.address, p.rating, p.total, p.type, null, null, p.emoji);
+}
+
+function openPlace(dataStr){
+  try {
+    const p = JSON.parse(dataStr.replace(/&#39;/g,"'"));
+    const photo = p.photos&&p.photos[0]
+      ? `${PLACES_PROXY}/photo?maxwidth=800&photoreference=${p.photos[0].photo_reference}&key=${PLACES_KEY}`
+      : null;
+    const isOpen = p.opening_hours?.open_now;
+    const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${p.place_id}`;
+    openPlaceModal(p.name, p.formatted_address||p.vicinity, p.rating, p.user_ratings_total, p.types?p.types[0]:'place', photo, mapsUrl, '📍', isOpen, p.formatted_phone_number);
+  } catch(e){ showToast('Could not load place details'); }
+}
+
+function openPlaceModal(name, address, rating, total, type, photo, mapsUrl, emoji, isOpen, phone){
+  document.getElementById('placeModalImg').innerHTML = photo
+    ? `<img src="${photo}" style="width:100%;height:200px;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style=width:100%;height:200px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem>${emoji}</div>'">`
+    : `<div style="width:100%;height:200px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem;">${emoji}</div>`;
+  document.getElementById('placeModalTitle').textContent = name||'';
+  document.getElementById('placeModalMeta').textContent = (type||'').replace(/_/g,' ')+' · ★ '+(rating?rating.toFixed(1):'N/A')+' ('+(total||0)+' reviews)';
+  document.getElementById('placeModalAddress').textContent = address||'';
+  document.getElementById('placeModalPhone').textContent = phone||'Not available';
+  document.getElementById('placeOpenBadge').style.display = isOpen!==undefined?'':'none';
+  document.getElementById('placeOpenBadge').className = 'open-badge '+(isOpen?'open':'closed');
+  document.getElementById('placeOpenBadge').textContent = isOpen?'✅ Open Now':'❌ Closed Now';
+  document.getElementById('placeGmapsBtn').href = mapsUrl||'https://maps.google.com/search/'+encodeURIComponent(name);
+  // Load community reviews for this place
+  const placeId = 'place_'+name.replace(/\s/g,'_').toLowerCase();
+  loadPlaceReviews(placeId, name);
+  document.getElementById('placeOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  gtag('event','place_viewed',{place_name:name,place_type:type});
+}
+
+function loadPlaceReviews(placeId, name){
+  const stored = JSON.parse(localStorage.getItem('pr_'+placeId)||'[]');
+  const el = document.getElementById('placeReviewsList');
+  document.getElementById('placeReviewTitle').textContent = name;
+  document.getElementById('placeReviewId').value = placeId;
+  if(!stored.length){
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No reviews yet!<br/>Be the first to review this place.</p></div>';
+    return;
+  }
+  el.innerHTML = stored.map(r=>`
+    <div class="review-item">
+      <div class="review-top">
+        <div class="avatar">${escapeHtml(r.name.slice(0,2).toUpperCase())}</div>
+        <div><div class="reviewer-name">${escapeHtml(r.name)}</div><div class="reviewer-sub">${escapeHtml(r.city||'India')}</div></div>
+        <div class="stars-row">${[1,2,3,4,5].map(i=>`<span style="color:${i<=r.stars?'var(--star)':'#D6EEF8'}">★</span>`).join('')}</div>
+      </div>
+      <div class="review-text">${escapeHtml(r.text)}</div>
+      <button class="helpful-btn">👍 Helpful (${r.helpful||0})</button>
+    </div>`).join('');
+}
+
+function submitPlaceReview(){
+  const placeId = document.getElementById('placeReviewId').value;
+  const name = document.getElementById('placeReviewName').value.trim();
+  const text = document.getElementById('placeReviewText').value.trim();
+  if(!name||name.length<2){showToast('Please enter your name','error');return;}
+  if(!text||text.length<10){showToast('Please write at least 10 characters','error');return;}
+  if(!selectedPlaceStar){showToast('Please select a star rating','error');return;}
+  const stored = JSON.parse(localStorage.getItem('pr_'+placeId)||'[]');
+  stored.unshift({name:escapeHtml(name),text:escapeHtml(text),stars:selectedPlaceStar,helpful:0,city:'India',timestamp:new Date().toISOString()});
+  localStorage.setItem('pr_'+placeId,JSON.stringify(stored));
+  loadPlaceReviews(placeId, document.getElementById('placeReviewTitle').textContent);
+  document.getElementById('placeReviewName').value='';
+  document.getElementById('placeReviewText').value='';
+  selectedPlaceStar=0;
+  document.querySelectorAll('.place-star-pick').forEach(s=>s.classList.remove('lit'));
+  showToast('✅ Review submitted! Thank you.','success');
+}
+
+let selectedPlaceStar=0;
+function pickPlaceStar(n){
+  selectedPlaceStar=n;
+  document.querySelectorAll('.place-star-pick').forEach((s,i)=>s.classList.toggle('lit',i<n));
+}
+
+function searchPlaces(type){
+  const q = document.getElementById(type==='restaurant'?'restSearch':'shopSearch').value.trim();
+  if(!q){showToast('Please enter a search term');return;}
+  const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '<div class="loading-state"><div class="spinner"></div> Searching...</div>';
+  const placeType = type==='restaurant'?'restaurant':'shopping_mall';
+  fetch(`${PLACES_PROXY}/textsearch/json?query=${encodeURIComponent(q+' in India')}&type=${placeType}&key=${PLACES_KEY}`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.results&&d.results.length) renderPlaces(d.results, gridId, type);
+      else renderDemoPlaces(gridId, placeType, currentCity);
+    })
+    .catch(()=>renderDemoPlaces(gridId, placeType, currentCity));
+}
+
+// Make movies section work with showSection
+const moviesSection = document.querySelector('.main-layout');
+if(moviesSection) moviesSection.id = 'moviesSection';
 
 // INIT
 loadMovies();
