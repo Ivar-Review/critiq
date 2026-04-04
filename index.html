@@ -448,11 +448,14 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5
 <section class="section places-section" id="restaurantsSection">
   <div class="sec-header">
     <div class="sec-title">🍽️ Restaurants Near You</div>
-    <span class="see-all" onclick="showSection('movies')">← Back to Movies</span>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="sort-btn" onclick="useMyLocation('restaurant')">📍 Use My Location</button>
+      <span class="see-all" onclick="showSection('movies')">← Back to Movies</span>
+    </div>
   </div>
   <div class="places-header">
     <div class="places-search-box">
-      <input type="text" id="restSearch" placeholder="Search restaurants by name or cuisine..."/>
+      <input type="text" id="restSearch" placeholder="Type any area: Bellandur, Chandrapur, Andheri..."/>
       <button class="places-search-btn" onclick="searchPlaces('restaurant')">Search</button>
     </div>
   </div>
@@ -474,11 +477,14 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:28px 5
 <section class="section places-section" id="shopsSection">
   <div class="sec-header">
     <div class="sec-title">🛍️ Shops & Malls Near You</div>
-    <span class="see-all" onclick="showSection('movies')">← Back to Movies</span>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="sort-btn" onclick="useMyLocation('shop')">📍 Use My Location</button>
+      <span class="see-all" onclick="showSection('movies')">← Back to Movies</span>
+    </div>
   </div>
   <div class="places-header">
     <div class="places-search-box">
-      <input type="text" id="shopSearch" placeholder="Search shops, malls, stores..."/>
+      <input type="text" id="shopSearch" placeholder="Type any area: Bellandur, Chandrapur, Andheri..."/>
       <button class="places-search-btn" onclick="searchPlaces('shop')">Search</button>
     </div>
   </div>
@@ -953,6 +959,8 @@ function doSearch(){
 
 function qSearch(t){document.getElementById('searchInput').value=t;doSearch();}
 document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+document.getElementById('restSearch').addEventListener('keydown',e=>{if(e.key==='Enter')searchPlaces('restaurant');});
+document.getElementById('shopSearch').addEventListener('keydown',e=>{if(e.key==='Enter')searchPlaces('shop');});
 
 // MOBILE MENU
 function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
@@ -1072,27 +1080,33 @@ async function loadPlaces(type, city, btn){
   currentCity = city;
   const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
   const grid = document.getElementById(gridId);
-  grid.innerHTML = '<div class="loading-state"><div class="spinner"></div> Loading...</div>';
+  grid.innerHTML = '<div class="loading-state"><div class="spinner"></div> Loading '+city+'...</div>';
 
-  // Update city buttons
   if(btn){
     const bar = btn.closest('.city-bar');
     bar.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
   }
 
+  const typeLabel = type==='restaurant'?'restaurants':'shopping malls';
+  const query = typeLabel+' in '+city+' India';
+  await fetchAndRenderPlaces(query, type, gridId, city);
+}
+
+async function fetchAndRenderPlaces(query, type, gridId, city){
+  const grid = document.getElementById(gridId);
   try {
-    const query = type==='restaurant'?'restaurants in '+city:'shopping malls in '+city;
-    const url = `${PLACES_PROXY}/textsearch/json?query=${encodeURIComponent(query)}&key=${PLACES_KEY}`;
-    const r = await fetch(url);
+    const url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${PLACES_KEY}`;
+    const r = await fetch(url, {headers:{'X-Requested-With':'XMLHttpRequest'}});
     const d = await r.json();
     if(d.results && d.results.length){
       renderPlaces(d.results, gridId, type);
     } else {
-      renderDemoPlaces(gridId, type, city);
+      renderDemoPlaces(gridId, type, city||'your area');
     }
-  } catch(e) {
-    renderDemoPlaces(gridId, type, city);
+  } catch(e){
+    // Fallback to demo with the searched city/area name
+    renderDemoPlaces(gridId, type, city||query);
   }
 }
 
@@ -1103,22 +1117,23 @@ function renderPlaces(list, gridId, type){
     return;
   }
   grid.innerHTML = list.slice(0,12).map(p => {
-    const photo = p.photos&&p.photos[0]
-      ? `${PLACES_PROXY}/photo?maxwidth=400&photoreference=${p.photos[0].photo_reference}&key=${PLACES_KEY}`
+    const photoRef = p.photos&&p.photos[0]?p.photos[0].photo_reference:null;
+    const photoUrl = photoRef
+      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoRef}&key=${PLACES_KEY}`
       : null;
     const emoji = type==='restaurant'?'🍽️':'🛍️';
-    const isOpen = p.opening_hours?.open_now;
-    return `<div class="place-card" onclick="openPlace('${escapeHtml(JSON.stringify(p).replace(/'/g,"&#39;"))}')">
-      ${photo
-        ? `<img class="place-img" src="${photo}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.outerHTML='<div class=place-img>${emoji}</div>'">`
-        : `<div class="place-img">${emoji}</div>`}
+    return `<div class="place-card" onclick='openPlace(${JSON.stringify(JSON.stringify(p))})'>
+      ${photoUrl
+        ? `<img class="place-img" src="${photoUrl}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div class="place-img" style="${photoUrl?'display:none':'display:flex'};align-items:center;justify-content:center;font-size:2.5rem;">${emoji}</div>
       <div class="place-info">
         <div class="place-name">${escapeHtml(p.name)}</div>
-        <div class="place-address">${escapeHtml(p.formatted_address||p.vicinity||'')}</div>
+        <div class="place-address">${escapeHtml((p.formatted_address||p.vicinity||'').split(',').slice(0,2).join(','))}</div>
         <div class="place-footer">
           <div class="place-rating">
             <span class="s">★</span> ${p.rating?p.rating.toFixed(1):'N/A'}
-            <span class="place-total">(${p.user_ratings_total||0})</span>
+            <span class="place-total">(${(p.user_ratings_total||0).toLocaleString()})</span>
           </div>
           ${p.types&&p.types[0]?`<span class="place-type">${p.types[0].replace(/_/g,' ')}</span>`:''}
         </div>
@@ -1166,9 +1181,10 @@ function openDemoPlace(p){
 
 function openPlace(dataStr){
   try {
-    const p = JSON.parse(dataStr.replace(/&#39;/g,"'"));
-    const photo = p.photos&&p.photos[0]
-      ? `${PLACES_PROXY}/photo?maxwidth=800&photoreference=${p.photos[0].photo_reference}&key=${PLACES_KEY}`
+    const p = JSON.parse(JSON.parse(dataStr));
+    const photoRef = p.photos&&p.photos[0]?p.photos[0].photo_reference:null;
+    const photo = photoRef
+      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${PLACES_KEY}`
       : null;
     const isOpen = p.opening_hours?.open_now;
     const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${p.place_id}`;
@@ -1235,26 +1251,49 @@ function submitPlaceReview(){
   showToast('✅ Review submitted! Thank you.','success');
 }
 
+
+function useMyLocation(type){
+  if(!navigator.geolocation){showToast('Location not supported on this browser','error');return;}
+  const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
+  document.getElementById(gridId).innerHTML = '<div class="loading-state"><div class="spinner"></div> Getting your location...</div>';
+  navigator.geolocation.getCurrentPosition(
+    async (pos)=>{
+      const {latitude:lat, longitude:lng} = pos.coords;
+      const placeType = type==='restaurant'?'restaurant':'shopping_mall';
+      const typeLabel = type==='restaurant'?'restaurants':'shopping malls';
+      showToast('📍 Found your location! Loading nearby '+typeLabel+'...');
+      try {
+        const url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=5000&type=${placeType}&key=${PLACES_KEY}`;
+        const r = await fetch(url, {headers:{'X-Requested-With':'XMLHttpRequest'}});
+        const d = await r.json();
+        if(d.results&&d.results.length) renderPlaces(d.results, gridId, type);
+        else renderDemoPlaces(gridId, type, 'your area');
+      } catch(e){
+        renderDemoPlaces(gridId, type, 'your area');
+      }
+    },
+    ()=>{
+      showToast('Please allow location access and try again','error');
+      renderDemoPlaces(gridId, type, 'your area');
+    }
+  );
+}
 let selectedPlaceStar=0;
 function pickPlaceStar(n){
   selectedPlaceStar=n;
   document.querySelectorAll('.place-star-pick').forEach((s,i)=>s.classList.toggle('lit',i<n));
 }
 
-function searchPlaces(type){
+async function searchPlaces(type){
   const q = document.getElementById(type==='restaurant'?'restSearch':'shopSearch').value.trim();
-  if(!q){showToast('Please enter a search term');return;}
+  if(!q){showToast('Please enter an area or name to search','error');return;}
   const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
-  const grid = document.getElementById(gridId);
-  grid.innerHTML = '<div class="loading-state"><div class="spinner"></div> Searching...</div>';
-  const placeType = type==='restaurant'?'restaurant':'shopping_mall';
-  fetch(`${PLACES_PROXY}/textsearch/json?query=${encodeURIComponent(q+' in India')}&type=${placeType}&key=${PLACES_KEY}`)
-    .then(r=>r.json())
-    .then(d=>{
-      if(d.results&&d.results.length) renderPlaces(d.results, gridId, type);
-      else renderDemoPlaces(gridId, placeType, currentCity);
-    })
-    .catch(()=>renderDemoPlaces(gridId, placeType, currentCity));
+  document.getElementById(gridId).innerHTML = '<div class="loading-state"><div class="spinner"></div> Searching for "'+q+'"...</div>';
+  const typeLabel = type==='restaurant'?'restaurants':'shopping malls';
+  // Smart query - if user types "Bellandur" it searches "restaurants in Bellandur India"
+  const query = q.toLowerCase().includes(typeLabel)?q+' India':typeLabel+' in '+q+' India';
+  await fetchAndRenderPlaces(query, type, gridId, q);
+  gtag('event','place_search',{search_term:q,type:type});
 }
 
 // Make movies section work with showSection
