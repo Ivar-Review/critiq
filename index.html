@@ -1052,94 +1052,183 @@ function showToast(msg,type=''){
 }
 
 
-// GOOGLE PLACES
+// GOOGLE MAPS PLACES - Browser Compatible
 const PLACES_KEY = 'AIzaSyBQqq0lcvXrSqzqL90wYGphWvsLl5GZn28';
-const PLACES_PROXY = 'https://maps.googleapis.com/maps/api/place';
+let placesService = null;
 let currentPlaceType = 'restaurant';
 let currentCity = 'Mumbai';
+let mapsLoaded = false;
+
+// Load Google Maps JS API dynamically
+function loadGoogleMaps(){
+  if(mapsLoaded) return;
+  mapsLoaded = true;
+  const script = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${PLACES_KEY}&libraries=places&callback=initPlacesService`;
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+}
+
+// Called automatically when Maps API loads
+window.initPlacesService = function(){
+  const map = new google.maps.Map(document.createElement('div'));
+  placesService = new google.maps.places.PlacesService(map);
+  // Auto load if section is visible
+  if(document.getElementById('restaurantsSection').classList.contains('active')){
+    loadPlaces('restaurant', currentCity, null);
+  } else if(document.getElementById('shopsSection').classList.contains('active')){
+    loadPlaces('shopping_mall', currentCity, null);
+  }
+}
 
 function showSection(section){
-  // Hide all sections
-  document.getElementById('moviesSection').style.display = section==='movies'?'':'none';
-  document.getElementById('restaurantsSection').classList.toggle('active', section==='restaurants');
-  document.getElementById('shopsSection').classList.toggle('active', section==='shops');
-
-  // Update category cards
-  document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active-section'));
-
-  if(section==='restaurants'){
-    loadPlaces('restaurant','Mumbai', document.querySelector('#restCityBar .city-btn'));
-  } else if(section==='shops'){
-    loadPlaces('shopping_mall','Mumbai', document.querySelector('#shopCityBar .city-btn'));
+  const moviesEl = document.getElementById('moviesSection');
+  const restEl = document.getElementById('restaurantsSection');
+  const shopEl = document.getElementById('shopsSection');
+  if(moviesEl) moviesEl.style.display = section==='movies'?'':'none';
+  restEl.classList.toggle('active', section==='restaurants');
+  shopEl.classList.toggle('active', section==='shops');
+  if(section==='restaurants'||section==='shops'){
+    loadGoogleMaps();
+    setTimeout(()=>{
+      if(section==='restaurants') loadPlaces('restaurant', 'Mumbai', document.querySelector('#restCityBar .city-btn'));
+      else loadPlaces('shopping_mall', 'Mumbai', document.querySelector('#shopCityBar .city-btn'));
+    }, placesService?0:2000);
   }
   window.scrollTo({top:300,behavior:'smooth'});
 }
 
-async function loadPlaces(type, city, btn){
+function loadPlaces(type, city, btn){
   currentPlaceType = type;
   currentCity = city;
   const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
   const grid = document.getElementById(gridId);
   grid.innerHTML = '<div class="loading-state"><div class="spinner"></div> Loading '+city+'...</div>';
-
   if(btn){
-    const bar = btn.closest('.city-bar');
-    bar.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
+    btn.closest('.city-bar').querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
   }
-
-  const typeLabel = type==='restaurant'?'restaurants':'shopping malls';
-  const query = typeLabel+' in '+city+' India';
-  await fetchAndRenderPlaces(query, type, gridId, city);
+  if(!placesService){ renderDemoPlaces(gridId, type, city); return; }
+  const req = {
+    query: (type==='restaurant'?'restaurants':'shopping malls')+' in '+city+' India',
+    type: [type]
+  };
+  placesService.textSearch(req, (results, status)=>{
+    if(status===google.maps.places.PlacesServiceStatus.OK && results.length){
+      renderPlaces(results, gridId, type);
+    } else {
+      renderDemoPlaces(gridId, type, city);
+    }
+  });
 }
 
-async function fetchAndRenderPlaces(query, type, gridId, city){
-  const grid = document.getElementById(gridId);
-  try {
-    const url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${PLACES_KEY}`;
-    const r = await fetch(url, {headers:{'X-Requested-With':'XMLHttpRequest'}});
-    const d = await r.json();
-    if(d.results && d.results.length){
-      renderPlaces(d.results, gridId, type);
+function searchPlaces(type){
+  const q = document.getElementById(type==='restaurant'?'restSearch':'shopSearch').value.trim();
+  if(!q){showToast('Type an area name like Bellandur or Chandrapur','error');return;}
+  const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
+  document.getElementById(gridId).innerHTML = '<div class="loading-state"><div class="spinner"></div> Searching "'+q+'"...</div>';
+  if(!placesService){ renderDemoPlaces(gridId, type, q); return; }
+  const typeLabel = type==='restaurant'?'restaurants':'shopping malls';
+  const query = q.toLowerCase().includes(typeLabel)?q:typeLabel+' in '+q+' India';
+  placesService.textSearch({query, type:[type==='restaurant'?'restaurant':'shopping_mall']}, (results, status)=>{
+    if(status===google.maps.places.PlacesServiceStatus.OK && results.length){
+      renderPlaces(results, gridId, type);
     } else {
-      renderDemoPlaces(gridId, type, city||'your area');
+      showToast('No results for "'+q+'". Showing popular places.');
+      renderDemoPlaces(gridId, type, q);
     }
-  } catch(e){
-    // Fallback to demo with the searched city/area name
-    renderDemoPlaces(gridId, type, city||query);
-  }
+  });
+  gtag('event','place_search',{search_term:q,type});
+}
+
+function useMyLocation(type){
+  if(!navigator.geolocation){showToast('Location not supported','error');return;}
+  const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
+  document.getElementById(gridId).innerHTML = '<div class="loading-state"><div class="spinner"></div> Getting your location...</div>';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const {latitude:lat, longitude:lng} = pos.coords;
+    showToast('📍 Location found! Loading nearby places...');
+    if(!placesService){ renderDemoPlaces(gridId, type, 'your area'); return; }
+    const loc = new google.maps.LatLng(lat, lng);
+    placesService.nearbySearch({
+      location: loc,
+      radius: 5000,
+      type: [type==='restaurant'?'restaurant':'shopping_mall']
+    }, (results, status)=>{
+      if(status===google.maps.places.PlacesServiceStatus.OK && results.length){
+        renderPlaces(results, gridId, type);
+      } else {
+        renderDemoPlaces(gridId, type, 'your area');
+      }
+    });
+  }, ()=>{
+    showToast('Please allow location access','error');
+    renderDemoPlaces(type==='restaurant'?'restaurantsGrid':'shopsGrid', type, 'your area');
+  });
 }
 
 function renderPlaces(list, gridId, type){
   const grid = document.getElementById(gridId);
-  if(!list.length){
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><p>No results found.<br/>Try a different city or search term.</p></div>';
+  if(!list||!list.length){
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><p>No results found.<br/>Try a different area.</p></div>';
     return;
   }
-  grid.innerHTML = list.slice(0,12).map(p => {
-    const photoRef = p.photos&&p.photos[0]?p.photos[0].photo_reference:null;
-    const photoUrl = photoRef
-      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoRef}&key=${PLACES_KEY}`
-      : null;
+  grid.innerHTML = list.slice(0,12).map((p,idx)=>{
     const emoji = type==='restaurant'?'🍽️':'🛍️';
-    return `<div class="place-card" onclick='openPlace(${JSON.stringify(JSON.stringify(p))})'>
+    const hasPhoto = p.photos && p.photos[0];
+    const photoUrl = hasPhoto ? p.photos[0].getUrl({maxWidth:400, maxHeight:300}) : null;
+    const rating = p.rating?p.rating.toFixed(1):'N/A';
+    const total = p.user_ratings_total?'('+p.user_ratings_total.toLocaleString()+')':'';
+    const typeLabel = p.types?p.types[0].replace(/_/g,' '):'place';
+    const addr = p.vicinity||p.formatted_address||'';
+    const shortAddr = addr.split(',').slice(0,2).join(',');
+    return `<div class="place-card" onclick="openPlaceById('${p.place_id}','${escapeHtml(p.name)}','${escapeHtml(shortAddr)}','${rating}','${total}','${typeLabel}','${photoUrl||''}','${emoji}')">
       ${photoUrl
-        ? `<img class="place-img" src="${photoUrl}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        ? `<img class="place-img" src="${photoUrl}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
         : ''}
-      <div class="place-img" style="${photoUrl?'display:none':'display:flex'};align-items:center;justify-content:center;font-size:2.5rem;">${emoji}</div>
+      <div class="place-img" style="${photoUrl?'display:none':'display:flex'};align-items:center;justify-content:center;font-size:2.5rem;height:160px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);">${emoji}</div>
       <div class="place-info">
         <div class="place-name">${escapeHtml(p.name)}</div>
-        <div class="place-address">${escapeHtml((p.formatted_address||p.vicinity||'').split(',').slice(0,2).join(','))}</div>
+        <div class="place-address">${escapeHtml(shortAddr)}</div>
         <div class="place-footer">
-          <div class="place-rating">
-            <span class="s">★</span> ${p.rating?p.rating.toFixed(1):'N/A'}
-            <span class="place-total">(${(p.user_ratings_total||0).toLocaleString()})</span>
-          </div>
-          ${p.types&&p.types[0]?`<span class="place-type">${p.types[0].replace(/_/g,' ')}</span>`:''}
+          <div class="place-rating"><span class="s">★</span> ${rating} <span class="place-total">${total}</span></div>
+          <span class="place-type">${typeLabel}</span>
         </div>
       </div>
     </div>`;
   }).join('');
+}
+
+function openPlaceById(placeId, name, address, rating, total, type, photoUrl, emoji){
+  if(!placesService){ openPlaceModal(name,address,parseFloat(rating)||0,0,type,photoUrl||null,'https://maps.google.com/?q='+encodeURIComponent(name+' '+address),emoji,undefined,null); return; }
+  placesService.getDetails({placeId, fields:['name','formatted_address','rating','user_ratings_total','opening_hours','formatted_phone_number','photos','url','types','website']}, (p,status)=>{
+    if(status===google.maps.places.PlacesServiceStatus.OK){
+      const photo = p.photos&&p.photos[0]?p.photos[0].getUrl({maxWidth:800,maxHeight:400}):photoUrl||null;
+      openPlaceModal(p.name,p.formatted_address,p.rating,p.user_ratings_total,p.types?p.types[0]:'place',photo,p.url||'https://maps.google.com/?q='+encodeURIComponent(p.name),emoji,p.opening_hours?.isOpen(),p.formatted_phone_number,p.website);
+    } else {
+      openPlaceModal(name,address,parseFloat(rating)||0,0,type,photoUrl||null,'https://maps.google.com/?q='+encodeURIComponent(name),emoji,undefined,null);
+    }
+  });
+}
+
+function openPlaceModal(name,address,rating,total,type,photo,mapsUrl,emoji,isOpen,phone,website){
+  document.getElementById('placeModalImg').innerHTML = photo
+    ? `<img src="${photo}" style="width:100%;height:200px;object-fit:cover;display:block;" onerror="this.outerHTML='<div style=width:100%;height:200px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem;>${emoji}</div>'">`
+    : `<div style="width:100%;height:200px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem;">${emoji}</div>`;
+  document.getElementById('placeModalTitle').textContent = name||'';
+  document.getElementById('placeModalMeta').textContent = (type||'').replace(/_/g,' ')+' · ★ '+(rating?parseFloat(rating).toFixed(1):'N/A')+' '+(total?'('+total+')':'');
+  document.getElementById('placeModalAddress').textContent = address||'';
+  document.getElementById('placeModalPhone').textContent = phone||'Not available';
+  const badge = document.getElementById('placeOpenBadge');
+  if(isOpen!==undefined&&isOpen!==null){badge.style.display='';badge.className='open-badge '+(isOpen?'open':'closed');badge.textContent=isOpen?'✅ Open Now':'❌ Closed Now';}
+  else badge.style.display='none';
+  document.getElementById('placeGmapsBtn').href = mapsUrl||'#';
+  const placeId = 'place_'+name.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  loadPlaceReviews(placeId, name);
+  document.getElementById('placeOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  gtag('event','place_viewed',{place_name:name,place_type:type});
 }
 
 function renderDemoPlaces(gridId, type, city){
@@ -1149,7 +1238,7 @@ function renderDemoPlaces(gridId, type, city){
     {name:'The Biryani House',address:'FC Road, '+city,rating:4.5,total:2100,type:'restaurant',emoji:'🍚'},
     {name:'Pizza Hub',address:'Anna Salai, '+city,rating:4.0,total:760,type:'restaurant',emoji:'🍕'},
     {name:'South Indian Delights',address:'Brigade Road, '+city,rating:4.4,total:1560,type:'restaurant',emoji:'🥘'},
-    {name:'Chai Sutta Bar',address:'Connaught Place, '+city,rating:4.2,total:980,type:'cafe',emoji:'☕'},
+    {name:'Chai Sutta Bar',address:'Station Road, '+city,rating:4.2,total:980,type:'cafe',emoji:'☕'},
   ];
   const shops = [
     {name:'Phoenix Mall',address:'Nagar Road, '+city,rating:4.4,total:8900,type:'shopping mall',emoji:'🏬'},
@@ -1159,125 +1248,22 @@ function renderDemoPlaces(gridId, type, city){
     {name:'Westside',address:'Linking Road, '+city,rating:4.3,total:1800,type:'clothing store',emoji:'👗'},
     {name:'D-Mart',address:'SV Road, '+city,rating:4.5,total:6700,type:'supermarket',emoji:'🏪'},
   ];
-  const data = type==='restaurant'?restaurants:shops;
+  const data = (type==='restaurant'||type==='food')?restaurants:shops;
   const grid = document.getElementById(gridId);
   grid.innerHTML = data.map(p=>`
-    <div class="place-card" onclick="openDemoPlace(${JSON.stringify(p).replace(/"/g,'&quot;')})">
-      <div class="place-img">${p.emoji}</div>
+    <div class="place-card" onclick="openPlaceModal('${escapeHtml(p.name)}','${escapeHtml(p.address)}',${p.rating},${p.total},'${p.type}',null,'https://maps.google.com/?q='+encodeURIComponent('${escapeHtml(p.name)}'),'${p.emoji}',undefined,null,null)">
+      <div class="place-img" style="height:160px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);">${p.emoji}</div>
       <div class="place-info">
-        <div class="place-name">${p.name}</div>
-        <div class="place-address">${p.address}</div>
+        <div class="place-name">${escapeHtml(p.name)}</div>
+        <div class="place-address">${escapeHtml(p.address)}</div>
         <div class="place-footer">
-          <div class="place-rating"><span class="s">★</span> ${p.rating} <span class="place-total">(${p.total})</span></div>
+          <div class="place-rating"><span class="s">★</span> ${p.rating} <span class="place-total">(${p.total.toLocaleString()})</span></div>
           <span class="place-type">${p.type}</span>
         </div>
       </div>
     </div>`).join('');
 }
 
-function openDemoPlace(p){
-  openPlaceModal(p.name, p.address, p.rating, p.total, p.type, null, null, p.emoji);
-}
-
-function openPlace(dataStr){
-  try {
-    const p = JSON.parse(JSON.parse(dataStr));
-    const photoRef = p.photos&&p.photos[0]?p.photos[0].photo_reference:null;
-    const photo = photoRef
-      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${PLACES_KEY}`
-      : null;
-    const isOpen = p.opening_hours?.open_now;
-    const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${p.place_id}`;
-    openPlaceModal(p.name, p.formatted_address||p.vicinity, p.rating, p.user_ratings_total, p.types?p.types[0]:'place', photo, mapsUrl, '📍', isOpen, p.formatted_phone_number);
-  } catch(e){ showToast('Could not load place details'); }
-}
-
-function openPlaceModal(name, address, rating, total, type, photo, mapsUrl, emoji, isOpen, phone){
-  document.getElementById('placeModalImg').innerHTML = photo
-    ? `<img src="${photo}" style="width:100%;height:200px;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style=width:100%;height:200px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem>${emoji}</div>'">`
-    : `<div style="width:100%;height:200px;background:linear-gradient(135deg,#B8E3F2,#7EC8E3);display:flex;align-items:center;justify-content:center;font-size:3rem;">${emoji}</div>`;
-  document.getElementById('placeModalTitle').textContent = name||'';
-  document.getElementById('placeModalMeta').textContent = (type||'').replace(/_/g,' ')+' · ★ '+(rating?rating.toFixed(1):'N/A')+' ('+(total||0)+' reviews)';
-  document.getElementById('placeModalAddress').textContent = address||'';
-  document.getElementById('placeModalPhone').textContent = phone||'Not available';
-  document.getElementById('placeOpenBadge').style.display = isOpen!==undefined?'':'none';
-  document.getElementById('placeOpenBadge').className = 'open-badge '+(isOpen?'open':'closed');
-  document.getElementById('placeOpenBadge').textContent = isOpen?'✅ Open Now':'❌ Closed Now';
-  document.getElementById('placeGmapsBtn').href = mapsUrl||'https://maps.google.com/search/'+encodeURIComponent(name);
-  // Load community reviews for this place
-  const placeId = 'place_'+name.replace(/\s/g,'_').toLowerCase();
-  loadPlaceReviews(placeId, name);
-  document.getElementById('placeOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-  gtag('event','place_viewed',{place_name:name,place_type:type});
-}
-
-function loadPlaceReviews(placeId, name){
-  const stored = JSON.parse(localStorage.getItem('pr_'+placeId)||'[]');
-  const el = document.getElementById('placeReviewsList');
-  document.getElementById('placeReviewTitle').textContent = name;
-  document.getElementById('placeReviewId').value = placeId;
-  if(!stored.length){
-    el.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No reviews yet!<br/>Be the first to review this place.</p></div>';
-    return;
-  }
-  el.innerHTML = stored.map(r=>`
-    <div class="review-item">
-      <div class="review-top">
-        <div class="avatar">${escapeHtml(r.name.slice(0,2).toUpperCase())}</div>
-        <div><div class="reviewer-name">${escapeHtml(r.name)}</div><div class="reviewer-sub">${escapeHtml(r.city||'India')}</div></div>
-        <div class="stars-row">${[1,2,3,4,5].map(i=>`<span style="color:${i<=r.stars?'var(--star)':'#D6EEF8'}">★</span>`).join('')}</div>
-      </div>
-      <div class="review-text">${escapeHtml(r.text)}</div>
-      <button class="helpful-btn">👍 Helpful (${r.helpful||0})</button>
-    </div>`).join('');
-}
-
-function submitPlaceReview(){
-  const placeId = document.getElementById('placeReviewId').value;
-  const name = document.getElementById('placeReviewName').value.trim();
-  const text = document.getElementById('placeReviewText').value.trim();
-  if(!name||name.length<2){showToast('Please enter your name','error');return;}
-  if(!text||text.length<10){showToast('Please write at least 10 characters','error');return;}
-  if(!selectedPlaceStar){showToast('Please select a star rating','error');return;}
-  const stored = JSON.parse(localStorage.getItem('pr_'+placeId)||'[]');
-  stored.unshift({name:escapeHtml(name),text:escapeHtml(text),stars:selectedPlaceStar,helpful:0,city:'India',timestamp:new Date().toISOString()});
-  localStorage.setItem('pr_'+placeId,JSON.stringify(stored));
-  loadPlaceReviews(placeId, document.getElementById('placeReviewTitle').textContent);
-  document.getElementById('placeReviewName').value='';
-  document.getElementById('placeReviewText').value='';
-  selectedPlaceStar=0;
-  document.querySelectorAll('.place-star-pick').forEach(s=>s.classList.remove('lit'));
-  showToast('✅ Review submitted! Thank you.','success');
-}
-
-
-function useMyLocation(type){
-  if(!navigator.geolocation){showToast('Location not supported on this browser','error');return;}
-  const gridId = type==='restaurant'?'restaurantsGrid':'shopsGrid';
-  document.getElementById(gridId).innerHTML = '<div class="loading-state"><div class="spinner"></div> Getting your location...</div>';
-  navigator.geolocation.getCurrentPosition(
-    async (pos)=>{
-      const {latitude:lat, longitude:lng} = pos.coords;
-      const placeType = type==='restaurant'?'restaurant':'shopping_mall';
-      const typeLabel = type==='restaurant'?'restaurants':'shopping malls';
-      showToast('📍 Found your location! Loading nearby '+typeLabel+'...');
-      try {
-        const url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=5000&type=${placeType}&key=${PLACES_KEY}`;
-        const r = await fetch(url, {headers:{'X-Requested-With':'XMLHttpRequest'}});
-        const d = await r.json();
-        if(d.results&&d.results.length) renderPlaces(d.results, gridId, type);
-        else renderDemoPlaces(gridId, type, 'your area');
-      } catch(e){
-        renderDemoPlaces(gridId, type, 'your area');
-      }
-    },
-    ()=>{
-      showToast('Please allow location access and try again','error');
-      renderDemoPlaces(gridId, type, 'your area');
-    }
-  );
-}
 let selectedPlaceStar=0;
 function pickPlaceStar(n){
   selectedPlaceStar=n;
